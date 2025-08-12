@@ -88,7 +88,7 @@ El ejecutable estará en dist/win-unpacked/ (Windows).
 ## **Licencia**
 ```text
 
-Copyright (c) 2024 [Tu Empresa]
+Copyright (c) 2025 DenguNorte
 
 Este software es propiedad privada y está licenciado solo para uso interno y empresarial de Servicio Tecnico JP SPA o la organización que haya adquirido una licencia u permiso válida.
 
