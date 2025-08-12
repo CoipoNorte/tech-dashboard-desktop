@@ -90,15 +90,11 @@ El ejecutable estará en dist/win-unpacked/ (Windows).
 
 Copyright (c) 2024 [Tu Empresa]
 
-Este software es propiedad privada y está licenciado solo para uso interno y empresarial de [Tu Empresa] o la organización que haya adquirido una licencia válida.
+Este software es propiedad privada y está licenciado solo para uso interno y empresarial de Servicio Tecnico JP SPA o la organización que haya adquirido una licencia u permiso válida.
 
 Queda prohibida la distribución, copia, modificación o uso fuera de la organización sin autorización expresa por escrito.
 
-Para más información o licencias empresariales, contacta a: [tu-email@tuempresa.com]
-Notas importantes
-No subas archivos sensibles (.env, credentials.json, token.json, base de datos real) a repositorios públicos.
-La integración con Google Drive requiere que agregues tu cuenta como usuario de prueba en la pantalla de consentimiento OAuth2.
-El build de Electron solo funcionará si todos los archivos y carpetas necesarias están incluidos en el build.
+Para más información o licencias empresariales, contacta a: [servicio.tecnico.jp.app@tuempresa.com]
 ```
 ## **Soporte**
 Para soporte técnico, contacta a:
