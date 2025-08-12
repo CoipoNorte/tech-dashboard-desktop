@@ -94,7 +94,7 @@ Este software es propiedad privada y está licenciado solo para uso interno y em
 
 Queda prohibida la distribución, copia, modificación o uso fuera de la organización sin autorización expresa por escrito.
 
-Para más información o licencias empresariales, contacta a: [servicio.tecnico.jp.app@tuempresa.com]
+Para más información o licencias empresariales, contacta a: [christiancaceres1398@gmail.com]
 ```
 ## **Soporte**
 Para soporte técnico, contacta a:
