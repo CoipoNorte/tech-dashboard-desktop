@@ -1,0 +1,91 @@
+body {
+  background: linear-gradient(135deg, #f8fafc 0%, #e0e7ef 100%);
+  min-height: 100vh;
+}
+
+.table img {
+  border-radius: 4px;
+}
+
+.navbar-brand {
+  font-weight: bold;
+  letter-spacing: 1px;
+  font-size: 1.5rem;
+  display: flex;
+  align-items: center;
+}
+.navbar-brand i {
+  font-size: 1.7rem;
+  margin-right: 8px;
+  color: #0dcaf0;
+}
+.navbar-nav .nav-link.active,
+.navbar-nav .nav-link:hover {
+  color: #0dcaf0 !important;
+}
+.navbar {
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.07);
+}
+
+/* Experimento */
+.navbar-nav .nav-link {
+  transition: 
+    background 0.2s cubic-bezier(0.4,0,0.2,1),
+    color 0.2s cubic-bezier(0.4,0,0.2,1),
+    font-weight 0.2s cubic-bezier(0.4,0,0.2,1);
+}
+
+.navbar-nav .nav-link:hover,
+.navbar-nav .nav-link:focus {
+  background: #0d6efd;
+  color: #fff !important;
+  font-weight: 600;
+  border-radius: 6px;
+}
+
+.navbar-nav .nav-link:hover i,
+.navbar-nav .nav-link:focus i {
+  color: #fff !important;
+  transition: color 0.2s;
+}
+
+/* Enlaces bonitos */
+a.text-dark.text-decoration-none:hover,
+.enlace-lupa:hover {
+  color: #0d6efd !important;
+  background: #f0f8ff;
+  border-radius: 4px;
+  text-decoration: none;
+  transition: all 0.2s;
+}
+.enlace-lupa {
+  transition: color 0.2s, background 0.2s;
+}
+.enlace-lupa i {
+  color: #0d6efd;
+  margin-right: 2px;
+}
+
+/* Tablas responsivas */
+.table-responsive {
+  margin-bottom: 1rem;
+}
+.table-responsive::-webkit-scrollbar {
+  height: 8px;
+}
+.table-responsive::-webkit-scrollbar-thumb {
+  background: #dee2e6;
+  border-radius: 4px;
+}
+
+/* Botones responsivos en filas */
+.d-grid.gap-2 > .btn,
+.d-grid.gap-2 > .btn + .btn {
+  margin-bottom: 0.5rem;
+}
+@media (min-width: 768px) {
+  .d-grid.gap-2 > .btn,
+  .d-grid.gap-2 > .btn + .btn {
+    margin-bottom: 0;
+  }
+}

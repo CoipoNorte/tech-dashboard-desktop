@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title><%= title %> | Tech Dashboard</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link href="/vendor/bootstrap.min.css" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet">
+  <link href="/css/style.css" rel="stylesheet">
+  <script src="/js/ui-utils.js"></script>
+</head>
+<body>
+  <nav class="navbar navbar-expand-lg navbar-dark bg-dark mb-4">
+    <div class="container">
+      <!-- Flecha de retroceso solo si no es login -->
+      <% if (title !== 'Iniciar sesión') { %>
+        <button class="btn btn-outline-secondary me-2" id="btnBackNav" title="Volver atrás" style="align-items:center;">
+          <i class="bi bi-arrow-left"></i>
+        </button>
+      <% } %>
+      <a class="navbar-brand collapse navbar-collapse" href="/dashboard">
+        <i class="bi bi-cpu"></i> Tech Dashboard
+      </a>
+      <a class="navbar-brand navbar-toggler" href="/dashboard"><i class="bi bi-cpu"></i></a>
+      
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarNav">
+        <% if (typeof usuario !== 'undefined' && usuario) { %>
+          <ul class="navbar-nav me-auto">
+            <li class="nav-item"><a class="nav-link <%= title === 'Clientes' ? 'active' : '' %>" href="/clientes"><i class="bi bi-people"></i> Clientes</a></li>
+            <li class="nav-item"><a class="nav-link <%= title === 'Trabajos' ? 'active' : '' %>" href="/trabajos"><i class="bi bi-tools"></i> Trabajos</a></li>
+            <li class="nav-item"><a class="nav-link <%= title === 'Categorías' ? 'active' : '' %>" href="/categorias"><i class="bi bi-tags"></i> Categorías</a></li>
+            <li class="nav-item"><a class="nav-link <%= title === 'Estados' ? 'active' : '' %>" href="/estados"><i class="bi bi-flag"></i> Estados</a></li>
+            <li class="nav-item"><a class="nav-link <%= title === 'Urgencias' ? 'active' : '' %>" href="/urgencias"><i class="bi bi-exclamation-circle"></i> Urgencias</a></li>
+            <li class="nav-item">
+              <a class="nav-link" href="/herramientas">
+                <i class="bi bi-file-earmark-excel"></i> Herramientas
+              </a>
+            </li>
+          </ul>
+          <ul class="navbar-nav">
+            <li class="nav-item">
+              <a class="nav-link <%= title === 'Mi Perfil' ? 'active' : '' %>" href="/usuarios/perfil">
+                <i class="bi bi-person-circle"></i>
+                <%= usuario.nombre %>
+              </a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="/logout"><i class="bi bi-box-arrow-right"></i> Salir</a>
+            </li>
+          </ul>
+        <% } %>
+      </div>
+    </div>
+  </nav>
+  <div class="container">
+
+<script>
+  document.addEventListener('DOMContentLoaded', function () {
+    const btnBack = document.getElementById('btnBackNav');
+    if (btnBack) {
+      btnBack.addEventListener('click', function () {
+        if (window.history.length > 1) {
+          window.history.back();
+        } else {
+          window.location.href = '/dashboard';
+        }
+      });
+    }
+  });
+</script>

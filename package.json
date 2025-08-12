@@ -1,0 +1,62 @@
+{
+  "name": "tech-dashboard-desktop",
+  "version": "2.0.0",
+  "description": "Dashboard técnico para visualizar y gestionar datos con estilo.",
+  "author": "Copito Norte",
+  "main": "main.js",
+  "scripts": {
+    "start": "electron .",
+    "dev": "nodemon src/server.js",
+    "build": "electron-builder",
+    "gen-db": "node src/utils/generate_sql_db.js",
+    "gen-admin": "node src/utils/generate_admin.js"
+  },
+  "dependencies": {
+    "adm-zip": "^0.5.16",
+    "archiver": "^7.0.1",
+    "bcryptjs": "^3.0.2",
+    "bootstrap": "^5.3.7",
+    "bootstrap-icons": "^1.13.1",
+    "dotenv": "^17.2.1",
+    "ejs": "^3.1.10",
+    "electron-context-menu": "^4.1.0",
+    "express": "^5.1.0",
+    "express-session": "^1.18.2",
+    "googleapis": "^155.0.0",
+    "json2csv": "^6.0.0-alpha.2",
+    "method-override": "^3.0.0",
+    "mime-types": "^3.0.1",
+    "multer": "^2.0.2",
+    "sharp": "^0.34.3",
+    "sqlite3": "^5.1.7",
+    "xlsx": "^0.18.5"
+  },
+  "devDependencies": {
+    "electron": "^37.2.5",
+    "electron-builder": "^26.0.12",
+    "nodemon": "^3.1.10"
+  },
+  "build": {
+    "appId": "com.dengunorte.techdashboard",
+    "productName": "Tech-Dashboard",
+    "directories": {
+      "output": "dist"
+    },
+    "files": [
+      "src/**/*",
+      "public/**/*",
+      "main.js",
+      "package.json",
+      "config/**/*",
+      "utils/**/*",
+      "credentials.json"
+    ],
+    "extraResources": [
+      {
+        "from": "src/data/tech-dashboard.db",
+        "to": "data/tech-dashboard.db"
+      },
+      "uploads/"
+    ]
+  }
+}
