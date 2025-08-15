@@ -2,6 +2,33 @@ const { app, BrowserWindow, globalShortcut } = require('electron');
 const path = require('path');
 const fs = require('fs');
 const contextMenuModule = require('electron-context-menu');
+const ElectronStore = require('electron-store').default; // 👈 Importación corregida
+
+// 🧠 Configuración del store con esquema
+const schema = {
+  windowSize: {
+    type: 'object',
+    properties: {
+      width: { type: 'number' },
+      height: { type: 'number' }
+    },
+    default: { width: 1200, height: 800 }
+  },
+  windowPosition: {
+    type: 'object',
+    properties: {
+      x: { type: ['number', 'null'] },
+      y: { type: ['number', 'null'] }
+    },
+    default: { x: null, y: null }
+  },
+  windowMaximized: {
+    type: 'boolean',
+    default: false
+  }
+};
+
+const store = new ElectronStore({ schema });
 
 // 🧁 Context menu personalizado
 const contextMenu = typeof contextMenuModule === 'function'
@@ -38,9 +65,15 @@ function waitForServer(url, timeout = 10000) {
 function createWindow() {
   const iconPath = path.join(__dirname, 'public', 'icon', 'icon.ico');
 
+  const { width, height } = store.get('windowSize');
+  const { x, y } = store.get('windowPosition');
+  const wasMaximized = store.get('windowMaximized');
+
   const win = new BrowserWindow({
-    width: 1200,
-    height: 800,
+    width,
+    height,
+    x: x ?? undefined,
+    y: y ?? undefined,
     icon: iconPath,
     webPreferences: {
       nodeIntegration: false,
@@ -49,6 +82,28 @@ function createWindow() {
     autoHideMenuBar: true
   });
 
+  // Restaurar estado maximizado si aplica
+  if (wasMaximized) win.maximize();
+
+  // Guardar tamaño si no está maximizada
+  win.on('resize', () => {
+    if (!win.isMaximized()) {
+      const [newWidth, newHeight] = win.getSize();
+      store.set('windowSize', { width: newWidth, height: newHeight });
+    }
+  });
+
+  // Guardar posición
+  win.on('move', () => {
+    const [newX, newY] = win.getPosition();
+    store.set('windowPosition', { x: newX, y: newY });
+  });
+
+  // Guardar estado maximizado
+  win.on('maximize', () => store.set('windowMaximized', true));
+  win.on('unmaximize', () => store.set('windowMaximized', false));
+
+  // 🎹 Atajo para mostrar/ocultar menú
   globalShortcut.register('Control+M', () => {
     const visible = win.isMenuBarVisible();
     win.setMenuBarVisibility(!visible);
@@ -59,7 +114,6 @@ function createWindow() {
 
 // 🚀 App ready
 app.whenReady().then(() => {
-  // 📦 Copiar base de datos si no existe
   const sourceDbPath = path.join(process.resourcesPath, 'data', 'tech-dashboard.db');
   const targetDbPath = path.join(app.getPath('userData'), 'tech-dashboard.db');
 
@@ -72,7 +126,6 @@ app.whenReady().then(() => {
     }
   }
 
-  // 🧠 Ejecutar servidor Express
   const serverPath = path.join(__dirname, 'src', 'server.js');
   require(serverPath);
 
