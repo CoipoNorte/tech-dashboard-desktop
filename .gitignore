@@ -17,6 +17,7 @@ yarn-error.log*
 .env.*
 token.json
 credentials.json
+correo.txt
 
 # Base de datos y archivos temporales
 uploads/

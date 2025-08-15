@@ -1,12 +1,19 @@
 <%- include('../partials/header', { title }) %>
+
 <div class="row justify-content-center align-items-center" style="min-height: 60vh;">
   <div class="col-md-4">
     <div class="card shadow">
       <div class="card-body">
         <h2 class="mb-4 text-center"><i class="bi bi-person-circle"></i> Iniciar sesión</h2>
+
+        <div id="patchStatus" class="text-center text-muted mb-3" style="display: none;">
+          <i class="bi bi-check-circle"></i> Verificando base de datos...
+        </div>
+
         <% if (error) { %>
           <div class="alert alert-danger text-center"><%= error %></div>
         <% } %>
+
         <form method="POST" action="/login">
           <div class="mb-3">
             <label>Usuario</label>
@@ -22,10 +29,36 @@
               <input type="password" name="password" class="form-control" required>
             </div>
           </div>
-          <button class="btn btn-primary w-100"><i class="bi bi-box-arrow-in-right"></i> Entrar</button>
+          <button id="loginBtn" class="btn btn-primary w-100" disabled>
+            <i class="bi bi-box-arrow-in-right"></i> Entrar
+          </button>
         </form>
       </div>
     </div>
   </div>
 </div>
+
+<script>
+  window.addEventListener('DOMContentLoaded', async () => {
+    const btn = document.getElementById('loginBtn');
+    const status = document.getElementById('patchStatus');
+    status.style.display = 'block';
+
+    try {
+      const res = await fetch('/api/patch-clientes');
+      const data = await res.json();
+
+      if (data.success && data.patched) {
+        status.innerHTML = '<i class="bi bi-check-circle-fill text-success"></i> Base actualizada correctamente';
+      } else {
+        status.innerHTML = '<i class="bi bi-check-circle text-muted"></i> Base ya estaba actualizada';
+      }
+    } catch (err) {
+      status.innerHTML = '<i class="bi bi-exclamation-circle text-danger"></i> Error al verificar base';
+    }
+
+    btn.disabled = false;
+  });
+</script>
+
 <%- include('../partials/footer') %>

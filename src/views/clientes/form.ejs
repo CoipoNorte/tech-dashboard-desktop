@@ -1,44 +1,259 @@
 <%- include('../partials/header', { title }) %>
-<h1><%= title %></h1>
-<form action="<%= action %>" method="post">
-  <div class="mb-3" style="max-width: 350px;">
-    <label>Nombre</label>
-    <div class="input-group">
-      <span class="input-group-text"><i class="bi bi-person"></i></span>
-      <input type="text" name="nombre" class="form-control" value="<%= cliente.nombre || '' %>" required>
+
+<div class="container py-4">
+  <div class="row justify-content-center">
+    <div class="col-12 col-md-8 col-lg-6">
+      <h1 class="text-center mb-4"><%= title %></h1>
+
+      <form action="<%= action %>" method="post">
+        <!-- Nombre -->
+        <div class="mb-3">
+          <label class="form-label">Nombre <span class="text-danger">*</span></label>
+          <div class="input-group">
+            <span class="input-group-text"><i class="bi bi-person"></i></span>
+            <input type="text" name="nombre" class="form-control" value="<%= cliente.nombre || '' %>" required>
+          </div>
+        </div>
+
+        <!-- Teléfono -->
+        <div class="mb-3">
+          <label class="form-label">Teléfono</label>
+          <div class="input-group">
+            <span class="input-group-text"><i class="bi bi-telephone"></i></span>
+            <input type="text" name="telefono" class="form-control" value="<%= cliente.telefono || '' %>" placeholder="Ej: +56 9 1234 5678">
+          </div>
+        </div>
+
+        <!-- Email (campo opcional) -->
+        <div class="mb-3">
+          <label class="form-label">Email <small class="text-muted">(opcional)</small></label>
+          <div class="input-group">
+            <span class="input-group-text"><i class="bi bi-envelope"></i></span>
+            <input type="email" name="email" class="form-control" value="<%= cliente.email || '' %>" placeholder="correo@ejemplo.com">
+          </div>
+        </div>
+
+        <!-- Medio de Contacto Principal -->
+        <div class="mb-4">
+          <label class="form-label">Medio de Contacto Principal</label>
+          <div class="d-flex flex-wrap gap-2 mb-3 justify-content-center">
+            <button type="button" class="btn btn-outline-success contact-type" data-type="whatsapp" title="WhatsApp">
+              <i class="bi bi-whatsapp"></i>
+              <span class="d-none d-sm-inline ms-1">WhatsApp</span>
+            </button>
+            <button type="button" class="btn btn-outline-danger contact-type" data-type="instagram" title="Instagram">
+              <i class="bi bi-instagram"></i>
+              <span class="d-none d-sm-inline ms-1">Instagram</span>
+            </button>
+            <button type="button" class="btn btn-outline-primary contact-type" data-type="email" title="Email">
+              <i class="bi bi-envelope"></i>
+              <span class="d-none d-sm-inline ms-1">Email</span>
+            </button>
+            <button type="button" class="btn btn-outline-info contact-type" data-type="telefono" title="Teléfono">
+              <i class="bi bi-telephone"></i>
+              <span class="d-none d-sm-inline ms-1">Teléfono</span>
+            </button>
+            <button type="button" class="btn btn-outline-dark contact-type" data-type="presencial" title="Presencial">
+              <i class="bi bi-person-check"></i>
+              <span class="d-none d-sm-inline ms-1">Presencial</span>
+            </button>
+          </div>
+
+          <input type="hidden" name="contacto_tipo" id="contacto_tipo" value="<%= cliente.contacto_tipo || '' %>">
+
+          <div id="contacto-input-wrapper">
+            <div class="input-group">
+              <span class="input-group-text" id="contacto-icon">
+                <i class="bi bi-chat-dots"></i>
+              </span>
+              <input type="text" 
+                     name="contacto" 
+                     id="contacto" 
+                     class="form-control" 
+                     placeholder="Selecciona primero el tipo de contacto" 
+                     value="<%= cliente.contacto || '' %>" 
+                     <%= !cliente.contacto_tipo ? 'disabled' : '' %>>
+            </div>
+            <small class="form-text text-muted mt-1" id="contacto-help">
+              Selecciona cómo prefieres contactar a este cliente
+            </small>
+          </div>
+        </div>
+
+        <!-- Dirección -->
+        <div class="mb-3">
+          <label class="form-label">Dirección</label>
+          <div class="input-group">
+            <span class="input-group-text"><i class="bi bi-geo-alt"></i></span>
+            <input type="text" name="direccion" class="form-control" value="<%= cliente.direccion || '' %>" placeholder="Dirección completa">
+          </div>
+        </div>
+
+        <!-- Observaciones -->
+        <div class="mb-3">
+          <label class="form-label">Observaciones</label>
+          <div class="input-group">
+            <span class="input-group-text bg-info text-white"><i class="bi bi-chat-left-text"></i></span>
+            <textarea name="observaciones" class="form-control border-info" rows="3" placeholder="Notas adicionales sobre el cliente"><%= cliente.observaciones || '' %></textarea>
+          </div>
+        </div>
+
+        <!-- Botones -->
+        <div class="text-center pb-3">
+          <button type="submit" class="btn btn-primary">
+            <i class="bi bi-save"></i> Guardar
+          </button>
+          <a href="/clientes" class="btn btn-secondary">
+            <i class="bi bi-x-circle"></i> Cancelar
+          </a>
+        </div>
+      </form>
     </div>
   </div>
-  <div class="mb-3" style="max-width: 350px;">
-    <label>Teléfono</label>
-    <div class="input-group">
-      <span class="input-group-text"><i class="bi bi-telephone"></i></span>
-      <input type="text" name="telefono" class="form-control" value="<%= cliente.telefono || '' %>">
-    </div>
-  </div>
-  <div class="mb-3" style="max-width: 350px;">
-    <label>Email</label>
-    <div class="input-group">
-      <span class="input-group-text"><i class="bi bi-envelope"></i></span>
-      <input type="email" name="email" class="form-control" value="<%= cliente.email || '' %>">
-    </div>
-  </div>
-  <div class="mb-3">
-    <label>Dirección</label>
-    <div class="input-group">
-      <span class="input-group-text"><i class="bi bi-geo-alt"></i></span>
-      <input type="text" name="direccion" class="form-control" value="<%= cliente.direccion || '' %>">
-    </div>
-  </div>
-  <div class="mb-3">
-    <label>Observaciones</label>
-    <div class="input-group">
-      <span class="input-group-text bg-info text-white"><i class="bi bi-chat-left-text"></i></span>
-      <textarea name="observaciones" class="form-control border-info"><%= cliente.observaciones || '' %></textarea>
-    </div>
-  </div>
-  <div class="text-center">
-    <button class="btn btn-primary"><i class="bi bi-save"></i> Guardar</button>
-    <a href="/clientes" class="btn btn-secondary">Cancelar</a>
-  </div>
-</form>
+</div>
+
+<!-- Script dinámico mejorado -->
+<script>
+  const buttons = document.querySelectorAll('.contact-type');
+  const inputWrapper = document.getElementById('contacto-input-wrapper');
+  const inputField = document.getElementById('contacto');
+  const tipoField = document.getElementById('contacto_tipo');
+  const iconSpan = document.getElementById('contacto-icon');
+  const helpText = document.getElementById('contacto-help');
+
+  const config = {
+    whatsapp: {
+      placeholder: 'Número de WhatsApp (Ej: +56912345678)',
+      icon: 'bi-whatsapp',
+      help: 'Ingresa el número de WhatsApp del cliente',
+      color: 'success'
+    },
+    instagram: {
+      placeholder: 'Usuario de Instagram (Ej: @usuario)',
+      icon: 'bi-instagram',
+      help: 'Ingresa el usuario de Instagram sin el @',
+      color: 'danger'
+    },
+    email: {
+      placeholder: 'Correo electrónico',
+      icon: 'bi-envelope',
+      help: 'Ingresa el correo electrónico principal',
+      color: 'primary'
+    },
+    telefono: {
+      placeholder: 'Número de teléfono',
+      icon: 'bi-telephone',
+      help: 'Ingresa el número de teléfono',
+      color: 'info'
+    },
+    presencial: {
+      placeholder: 'Información de contacto presencial',
+      icon: 'bi-person-check',
+      help: 'Ingresa detalles del contacto presencial',
+      color: 'dark'
+    }
+  };
+
+  // Función para actualizar el campo de contacto
+  function updateContactField(tipo) {
+    const conf = config[tipo];
+    if (conf) {
+      inputField.placeholder = conf.placeholder;
+      inputField.disabled = false;
+      helpText.textContent = conf.help;
+      
+      // Actualizar icono
+      iconSpan.innerHTML = `<i class="bi ${conf.icon}"></i>`;
+      
+      // Actualizar color del input group
+      inputWrapper.querySelector('.input-group').className = `input-group border-${conf.color} rounded`;
+    }
+  }
+
+  // Event listeners para los botones
+  buttons.forEach(btn => {
+    btn.addEventListener('click', () => {
+      const tipo = btn.dataset.type;
+      tipoField.value = tipo;
+      
+      // Actualizar UI
+      buttons.forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      
+      updateContactField(tipo);
+      inputField.focus();
+    });
+  });
+
+  // Inicializar si ya hay un tipo seleccionado
+  const tipoInicial = tipoField.value;
+  if (tipoInicial) {
+    buttons.forEach(btn => {
+      if (btn.dataset.type === tipoInicial) {
+        btn.classList.add('active');
+        updateContactField(tipoInicial);
+      }
+    });
+  }
+
+  // Validación en tiempo real
+  inputField.addEventListener('input', function() {
+    const tipo = tipoField.value;
+    let isValid = true;
+    
+    if (tipo === 'email' && this.value) {
+      isValid = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(this.value);
+      this.classList.toggle('is-invalid', !isValid);
+      this.classList.toggle('is-valid', isValid);
+    } else if ((tipo === 'whatsapp' || tipo === 'telefono') && this.value) {
+      isValid = /^[\d\s\-\+KATEX_INLINE_OPENKATEX_INLINE_CLOSE]+$/.test(this.value);
+      this.classList.toggle('is-invalid', !isValid);
+      this.classList.toggle('is-valid', isValid);
+    } else {
+      this.classList.remove('is-invalid', 'is-valid');
+    }
+  });
+</script>
+
+<!-- Estilos mejorados -->
+<style>
+  .contact-type {
+    min-width: 120px;
+    transition: all 0.3s ease;
+    border-width: 2px;
+  }
+  
+  .contact-type:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+  }
+  
+  .contact-type.active {
+    transform: scale(1.05);
+    box-shadow: 0 0 0 3px rgba(var(--bs-primary-rgb), 0.25);
+  }
+  
+  .contact-type i {
+    font-size: 1.2rem;
+  }
+  
+  @media (max-width: 576px) {
+    .contact-type {
+      min-width: 50px;
+      padding: 0.5rem;
+    }
+  }
+  
+  .input-group.border-success { border: 2px solid var(--bs-success) !important; }
+  .input-group.border-danger { border: 2px solid var(--bs-danger) !important; }
+  .input-group.border-primary { border: 2px solid var(--bs-primary) !important; }
+  .input-group.border-info { border: 2px solid var(--bs-info) !important; }
+  .input-group.border-dark { border: 2px solid var(--bs-dark) !important; }
+  
+  .form-label {
+    font-weight: 500;
+    color: #495057;
+  }
+</style>
+
 <%- include('../partials/footer') %>

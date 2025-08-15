@@ -1,0 +1,399 @@
+:root {
+    --sidebar-width: 280px;
+    --sidebar-collapsed-width: 80px;
+    /* Aumentado de 70px para que no se corten los iconos */
+    --header-height: 60px;
+    --primary-color: #4e73df;
+    --dark-color: #1a1a2e;
+    --light-bg: #f8f9fc;
+}
+
+body {
+    background-color: var(--light-bg);
+    margin: 0;
+    padding: 0;
+}
+
+/* Ocultar todo en la página de login */
+body.login-page .classic-navbar,
+body.login-page .modern-sidebar,
+body.login-page .modern-header,
+body.login-page .layout-toggle,
+body.login-page .sidebar-backdrop {
+    display: none !important;
+}
+
+body.login-page {
+    padding-top: 0 !important;
+}
+
+/* Ajuste específico para modo sidebar */
+body.sidebar-mode {
+    padding-top: var(--header-height);
+}
+
+/* Sin padding-top para modo navbar */
+body.navbar-mode {
+    padding-top: 0;
+}
+
+/* Modo Toggle Button */
+.layout-toggle {
+    position: fixed;
+    bottom: 30px;
+    right: 30px;
+    z-index: 9999;
+    background: var(--primary-color);
+    color: white;
+    border: none;
+    border-radius: 50%;
+    width: 56px;
+    height: 56px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.layout-toggle:hover {
+    transform: scale(1.1);
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.2);
+}
+
+/* MODO NAVBAR (Superior) */
+.navbar-mode .modern-sidebar,
+.navbar-mode .modern-header,
+.navbar-mode .sidebar-backdrop {
+    display: none !important;
+}
+
+.navbar-mode .main-content {
+    margin-left: 0 !important;
+    margin-top: 0 !important;
+    padding-top: 1rem;
+}
+
+.classic-navbar {
+    display: none;
+}
+
+.navbar-mode .classic-navbar {
+    display: block;
+    margin-bottom: 0;
+    /* Quitar margen inferior */
+}
+
+/* MODO SIDEBAR (Lateral) */
+.sidebar-mode .classic-navbar {
+    display: none;
+}
+
+/* Header moderno - z-index alto para estar siempre visible */
+.modern-header {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: var(--header-height);
+    background: #fff;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.08);
+    z-index: 1045;
+    transition: all 0.3s ease;
+}
+
+.modern-header.sidebar-open {
+    margin-left: var(--sidebar-width);
+}
+
+.modern-header.sidebar-collapsed {
+    margin-left: var(--sidebar-collapsed-width);
+}
+
+.header-content {
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 1.5rem;
+}
+
+.header-left {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+.sidebar-toggle {
+    background: none;
+    border: none;
+    font-size: 1.5rem;
+    color: var(--dark-color);
+    cursor: pointer;
+    padding: 0.5rem;
+    border-radius: 0.5rem;
+    transition: all 0.3s ease;
+}
+
+.sidebar-toggle:hover {
+    background-color: var(--light-bg);
+    color: var(--primary-color);
+}
+
+/* Sidebar moderno - ajustado para no cubrir el header */
+.modern-sidebar {
+    position: fixed;
+    top: 0;
+    /* Cambiado a 0 para login */
+    left: 0;
+    height: 100vh;
+    /* Altura completa */
+    width: var(--sidebar-width);
+    background: linear-gradient(135deg, var(--dark-color) 0%, #16213e 100%);
+    box-shadow: 2px 0 10px rgba(0, 0, 0, 0.1);
+    z-index: 1040;
+    transition: all 0.3s ease;
+    overflow-x: hidden;
+    overflow-y: auto;
+    padding-top: var(--header-height);
+    /* Padding en lugar de top */
+}
+
+/* Ajuste específico cuando hay usuario logueado */
+body.sidebar-mode:not(.login-page) .modern-sidebar {
+    padding-top: var(--header-height);
+}
+
+/* Para la página de login */
+body.login-page .modern-sidebar {
+    display: none;
+}
+
+.modern-sidebar.collapsed {
+    width: var(--sidebar-collapsed-width);
+}
+
+.modern-sidebar.hidden {
+    transform: translateX(-100%);
+}
+
+.sidebar-brand-section {
+    padding: 1.5rem;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    margin-bottom: 0.5rem;
+    min-height: 60px;
+    /* Altura mínima para evitar colapso */
+    display: flex;
+    align-items: center;
+}
+
+.sidebar-brand {
+    color: #fff;
+    text-decoration: none;
+    font-size: 1.25rem;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    white-space: nowrap;
+    width: 100%;
+}
+
+.sidebar-brand i {
+    font-size: 1.5rem;
+    color: var(--primary-color);
+    flex-shrink: 0;
+    /* Evitar que el icono se comprima */
+}
+
+.sidebar-nav {
+    padding: 1rem 0;
+}
+
+.sidebar-nav-item {
+    margin-bottom: 0.25rem;
+}
+
+.sidebar-nav-link {
+    display: flex;
+    align-items: center;
+    padding: 0.75rem 1.5rem;
+    color: rgba(255, 255, 255, 0.8);
+    text-decoration: none;
+    transition: all 0.3s ease;
+    position: relative;
+    white-space: nowrap;
+    overflow: hidden;
+    /* Evitar desbordamiento */
+}
+
+.sidebar-nav-link:hover {
+    color: #fff;
+    background-color: rgba(255, 255, 255, 0.05);
+}
+
+.sidebar-nav-link.active {
+    color: #fff;
+    background-color: rgba(78, 115, 223, 0.2);
+}
+
+.sidebar-nav-link.active::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    width: 3px;
+    background-color: var(--primary-color);
+}
+
+.sidebar-nav-link i {
+    font-size: 1.1rem;
+    width: 1.75rem;
+    /* Aumentado para evitar corte */
+    margin-right: 0.75rem;
+    text-align: center;
+    flex-shrink: 0;
+    /* Evitar que el icono se comprima */
+}
+
+/* Ajustes para sidebar colapsado */
+.modern-sidebar.collapsed .sidebar-brand span,
+.modern-sidebar.collapsed .sidebar-nav-link span {
+    opacity: 0;
+    visibility: hidden;
+    width: 0;
+    margin: 0;
+}
+
+.modern-sidebar.collapsed .sidebar-brand-section {
+    padding: 1rem;
+    justify-content: center;
+}
+
+.modern-sidebar.collapsed .sidebar-brand {
+    justify-content: center;
+}
+
+.modern-sidebar.collapsed .sidebar-nav-link {
+    justify-content: center;
+    padding: 0.75rem 1rem;
+}
+
+.modern-sidebar.collapsed .sidebar-nav-link i {
+    margin-right: 0;
+    font-size: 1.25rem;
+    width: auto;
+}
+
+/* User menu */
+.user-menu {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.user-avatar {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    background: var(--primary-color);
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 600;
+    flex-shrink: 0;
+}
+
+.user-dropdown {
+    background: none;
+    border: none;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.5rem;
+    border-radius: 0.5rem;
+    transition: all 0.3s ease;
+    cursor: pointer;
+}
+
+.user-dropdown:hover {
+    background-color: var(--light-bg);
+}
+
+/* Main content - ajustado con margen superior */
+.main-content {
+    margin-left: var(--sidebar-width);
+    padding: 2rem;
+    transition: all 0.3s ease;
+    min-height: calc(100vh - var(--header-height));
+}
+
+.main-content.sidebar-collapsed {
+    margin-left: var(--sidebar-collapsed-width);
+}
+
+.main-content.sidebar-hidden {
+    margin-left: 0;
+}
+
+/* Mobile */
+@media (max-width: 768px) {
+    .modern-header {
+        margin-left: 0 !important;
+    }
+
+    .modern-sidebar {
+        transform: translateX(-100%);
+    }
+
+    .modern-sidebar.mobile-open {
+        transform: translateX(0);
+    }
+
+    .main-content {
+        margin-left: 0 !important;
+    }
+
+    .sidebar-backdrop {
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: rgba(0, 0, 0, 0.5);
+        z-index: 1035;
+        display: none;
+    }
+
+    .sidebar-backdrop.show {
+        display: block;
+    }
+}
+
+/* Tooltip para el botón de cambio de layout */
+.layout-tooltip {
+    position: absolute;
+    bottom: 60px;
+    right: 0;
+    background: #333;
+    color: white;
+    padding: 0.5rem 1rem;
+    border-radius: 0.25rem;
+    font-size: 0.875rem;
+    white-space: nowrap;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.3s ease;
+}
+
+.layout-toggle:hover .layout-tooltip {
+    opacity: 1;
+}
+
+/* Fix para la página de login */
+body:not(.sidebar-mode):not(.navbar-mode) .layout-toggle {
+    display: none;
+}

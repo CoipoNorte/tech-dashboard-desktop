@@ -6,11 +6,20 @@ const db = require('../config/db');
 exports.listar = (req, res) => {
   const { q } = req.query;
   if (q) {
-    db.all('SELECT * FROM clientes WHERE nombre LIKE ?', [`%${q}%`], (err, clientes) => {
-      res.render('clientes/index', { title: 'Clientes', clientes, q });
-    });
+    db.all(
+      `SELECT * FROM clientes 
+       WHERE nombre LIKE ? 
+       OR telefono LIKE ? 
+       OR email LIKE ? 
+       OR contacto LIKE ?
+       ORDER BY fechaCreacion DESC`, 
+      [`%${q}%`, `%${q}%`, `%${q}%`, `%${q}%`], 
+      (err, clientes) => {
+        res.render('clientes/index', { title: 'Clientes', clientes, q });
+      }
+    );
   } else {
-    db.all('SELECT * FROM clientes', [], (err, clientes) => {
+    db.all('SELECT * FROM clientes ORDER BY fechaCreacion DESC', [], (err, clientes) => {
       res.render('clientes/index', { title: 'Clientes', clientes, q });
     });
   }
@@ -18,16 +27,25 @@ exports.listar = (req, res) => {
 
 // Formulario para nuevo cliente
 exports.formNuevo = (req, res) => {
-  res.render('clientes/form', { title: 'Nuevo Cliente', cliente: {}, action: '/clientes', method: 'POST' });
+  res.render('clientes/form', { 
+    title: 'Nuevo Cliente', 
+    cliente: {}, 
+    action: '/clientes', 
+    method: 'POST' 
+  });
 };
 
 // Crear cliente
 exports.crear = (req, res) => {
-  const { nombre, telefono, email, direccion, observaciones } = req.body;
+  const { nombre, telefono, email, contacto, contacto_tipo, direccion, observaciones } = req.body;
   db.run(
-    'INSERT INTO clientes (nombre, telefono, email, direccion, observaciones) VALUES (?, ?, ?, ?, ?)',
-    [nombre, telefono, email, direccion, observaciones],
+    `INSERT INTO clientes (nombre, telefono, email, contacto, contacto_tipo, direccion, observaciones) 
+     VALUES (?, ?, ?, ?, ?, ?, ?)`,
+    [nombre, telefono, email, contacto, contacto_tipo, direccion, observaciones],
     function(err) {
+      if (err) {
+        console.error('Error al crear cliente:', err);
+      }
       res.redirect('/clientes');
     }
   );
@@ -37,6 +55,7 @@ exports.crear = (req, res) => {
 exports.detalle = (req, res) => {
   db.get('SELECT * FROM clientes WHERE id = ?', [req.params.id], (err, cliente) => {
     if (!cliente) return res.redirect('/clientes');
+    
     db.all(`
       SELECT t.*, 
         cat.nombre AS categoria_nombre, cat.icono AS categoria_icono,
@@ -47,6 +66,7 @@ exports.detalle = (req, res) => {
       JOIN estados e ON t.estado_id = e.id
       JOIN urgencias u ON t.urgencia_id = u.id
       WHERE t.cliente_id = ?
+      ORDER BY t.fechaIngreso DESC
     `, [cliente.id], (err, trabajos) => {
       res.render('clientes/detalle', { title: 'Detalle Cliente', cliente, trabajos });
     });
@@ -57,25 +77,75 @@ exports.detalle = (req, res) => {
 exports.formEditar = (req, res) => {
   db.get('SELECT * FROM clientes WHERE id = ?', [req.params.id], (err, cliente) => {
     if (!cliente) return res.redirect('/clientes');
-    res.render('clientes/form', { title: 'Editar Cliente', cliente, action: `/clientes/${cliente.id}`, method: 'POST' });
+    res.render('clientes/form', { 
+      title: 'Editar Cliente', 
+      cliente, 
+      action: `/clientes/${cliente.id}`, 
+      method: 'POST' 
+    });
   });
 };
 
 // Editar cliente
 exports.editar = (req, res) => {
-  const { nombre, telefono, email, direccion, observaciones } = req.body;
+  const { nombre, telefono, email, contacto, contacto_tipo, direccion, observaciones } = req.body;
   db.run(
-    'UPDATE clientes SET nombre = ?, telefono = ?, email = ?, direccion = ?, observaciones = ? WHERE id = ?',
-    [nombre, telefono, email, direccion, observaciones, req.params.id],
+    `UPDATE clientes 
+     SET nombre = ?, telefono = ?, email = ?, contacto = ?, contacto_tipo = ?, direccion = ?, observaciones = ? 
+     WHERE id = ?`,
+    [nombre, telefono, email, contacto, contacto_tipo, direccion, observaciones, req.params.id],
     function(err) {
-      res.redirect('/clientes');
+      if (err) {
+        console.error('Error al actualizar cliente:', err);
+      }
+      res.redirect(`/clientes/${req.params.id}`);
     }
   );
 };
 
 // Eliminar cliente
 exports.eliminar = (req, res) => {
-  db.run('DELETE FROM clientes WHERE id = ?', [req.params.id], function() {
-    res.redirect('/clientes');
-  });
+  // Primero verificar si tiene trabajos asociados
+  db.get(
+    'SELECT COUNT(*) as count FROM trabajos WHERE cliente_id = ?', 
+    [req.params.id], 
+    (err, result) => {
+      if (result && result.count > 0) {
+        // Si tiene trabajos, no permitir eliminar
+        res.status(400).send('No se puede eliminar un cliente con trabajos asociados');
+      } else {
+        // Si no tiene trabajos, proceder a eliminar
+        db.run('DELETE FROM clientes WHERE id = ?', [req.params.id], function(err) {
+          if (err) {
+            console.error('Error al eliminar cliente:', err);
+            res.status(500).send('Error al eliminar cliente');
+          } else {
+            res.redirect('/clientes');
+          }
+        });
+      }
+    }
+  );
+};
+
+// Método adicional: Obtener estadísticas de tipos de contacto
+exports.estadisticasContacto = (req, res) => {
+  db.all(
+    `SELECT 
+      contacto_tipo,
+      COUNT(*) as total
+     FROM clientes 
+     WHERE contacto_tipo IS NOT NULL AND contacto_tipo != ''
+     GROUP BY contacto_tipo
+     ORDER BY total DESC`,
+    [],
+    (err, stats) => {
+      if (err) {
+        console.error('Error al obtener estadísticas:', err);
+        res.json({ error: 'Error al obtener estadísticas' });
+      } else {
+        res.json(stats);
+      }
+    }
+  );
 };

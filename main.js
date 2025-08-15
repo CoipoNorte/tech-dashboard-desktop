@@ -1,10 +1,9 @@
-// main.js
-
 const { app, BrowserWindow, globalShortcut } = require('electron');
 const path = require('path');
 const fs = require('fs');
 const contextMenuModule = require('electron-context-menu');
 
+// 🧁 Context menu personalizado
 const contextMenu = typeof contextMenuModule === 'function'
   ? contextMenuModule
   : contextMenuModule.default;
@@ -16,6 +15,7 @@ contextMenu({
   showInspectElement: false
 });
 
+// 🕒 Esperar a que Express esté listo
 function waitForServer(url, timeout = 10000) {
   return new Promise((resolve, reject) => {
     const start = Date.now();
@@ -34,10 +34,14 @@ function waitForServer(url, timeout = 10000) {
   });
 }
 
+// 🪟 Crear ventana principal
 function createWindow() {
+  const iconPath = path.join(__dirname, 'public', 'icon', 'icon.ico');
+
   const win = new BrowserWindow({
     width: 1200,
     height: 800,
+    icon: iconPath,
     webPreferences: {
       nodeIntegration: false,
       contextIsolation: true
@@ -53,8 +57,9 @@ function createWindow() {
   win.loadURL('http://localhost:3000');
 }
 
+// 🚀 App ready
 app.whenReady().then(() => {
-  // Copiar base de datos si no existe
+  // 📦 Copiar base de datos si no existe
   const sourceDbPath = path.join(process.resourcesPath, 'data', 'tech-dashboard.db');
   const targetDbPath = path.join(app.getPath('userData'), 'tech-dashboard.db');
 
@@ -67,8 +72,8 @@ app.whenReady().then(() => {
     }
   }
 
-  // Ejecutar servidor Express
-  const serverPath = path.join(__dirname, 'src/server.js');
+  // 🧠 Ejecutar servidor Express
+  const serverPath = path.join(__dirname, 'src', 'server.js');
   require(serverPath);
 
   waitForServer('http://localhost:3000')
@@ -76,11 +81,12 @@ app.whenReady().then(() => {
       createWindow();
     })
     .catch(err => {
-      console.error('No se pudo conectar al servidor Express:', err.message);
+      console.error('❌ No se pudo conectar al servidor Express:', err.message);
       app.quit();
     });
 });
 
+// 🧹 Cerrar app si no es macOS
 app.on('window-all-closed', () => {
   if (process.platform !== 'darwin') app.quit();
 });

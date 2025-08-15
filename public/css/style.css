@@ -14,39 +14,178 @@ body {
   display: flex;
   align-items: center;
 }
+
 .navbar-brand i {
   font-size: 1.7rem;
   margin-right: 8px;
   color: #0dcaf0;
 }
+
 .navbar-nav .nav-link.active,
 .navbar-nav .nav-link:hover {
   color: #0dcaf0 !important;
 }
+
 .navbar {
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.07);
 }
 
-/* Experimento */
-.navbar-nav .nav-link {
-  transition: 
-    background 0.2s cubic-bezier(0.4,0,0.2,1),
-    color 0.2s cubic-bezier(0.4,0,0.2,1),
-    font-weight 0.2s cubic-bezier(0.4,0,0.2,1);
+/* dashboard efecto */
+.card-dashboard-hover {
+  transition: box-shadow 0.2s, transform 0.2s, background 0.2s;
+  cursor: pointer;
 }
 
-.navbar-nav .nav-link:hover,
-.navbar-nav .nav-link:focus {
-  background: #0d6efd;
-  color: #fff !important;
-  font-weight: 600;
+.card-dashboard-hover:hover {
+  box-shadow: 0 8px 32px rgba(13, 110, 253, 0.18), 0 2px 8px rgba(0, 0, 0, 0.10);
+  transform: translateY(-4px) scale(1.05);
+}
+
+.card-dashboard-hover:hover i {
+  transform: scale(1.6);
+  /* antes era 1.15 */
+  transition: transform 0.3s;
+}
+
+/* TOOOL TIP */
+#customTooltip {
+  position: absolute;
+  z-index: 9999;
+  background: #fff;
+  border: 1px solid #ccc;
   border-radius: 6px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+  padding: 8px;
+  max-width: 300px;
+  /* límite superior */
+  min-width: 120px;
+  /* límite inferior */
+  width: auto;
+  /* que se adapte */
+  white-space: normal;
+  /* permite saltos de línea */
+  word-wrap: break-word;
+  transition: opacity 0.2s ease;
 }
 
-.navbar-nav .nav-link:hover i,
-.navbar-nav .nav-link:focus i {
-  color: #fff !important;
-  transition: color 0.2s;
+.text-area-wrapper {
+  transition: all 0.3s ease;
+}
+
+/*copy efecto*/
+.copy-btn {
+  padding: 0.25rem 0.5rem;
+  border: 1px solid #dee2e6;
+  transition: all 0.2s;
+}
+
+.copy-btn:hover {
+  background-color: #e9ecef;
+  border-color: #adb5bd;
+}
+
+.copy-btn i {
+  font-size: 0.875rem;
+}
+
+/* BOTON EFECTO HOVER */
+.btn {
+  transition: box-shadow 0.2s, transform 0.2s, background 0.2s;
+  cursor: pointer;
+}
+
+.btn:hover {
+  box-shadow: 0 8px 32px rgba(13, 110, 253, 0.18), 0 2px 8px rgba(0, 0, 0, 0.10);
+  transform: translateY(-4px) scale(1.03);
+}
+
+.btn:hover i {
+  transform: scale(1.15);
+  transition: transform 0.2s;
+}
+
+/* BOTÓN EFECTO HOVER CON SALTO SUAVE */
+.btnjump {
+  transition: background 0.3s;
+  cursor: pointer;
+}
+
+.btnjump:hover {
+  animation: bounce 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  /*box-shadow: 0 8px 32px rgba(13, 110, 253, 0.18), 0 2px 8px rgba(0, 0, 0, 0.10);*/
+}
+
+.btnjump:hover i {
+  animation: bounce-icon 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+
+/* Animación del botón */
+@keyframes bounce {
+  0% {
+    transform: translateY(0) scale(1);
+  }
+
+  25% {
+    transform: translateY(-5px) scale(1.04);
+  }
+
+  50% {
+    transform: translateY(3px) scale(0.98);
+  }
+
+  75% {
+    transform: translateY(-2px) scale(1.02);
+  }
+
+  100% {
+    transform: translateY(0) scale(1);
+  }
+}
+
+/* Animación del ícono */
+@keyframes bounce-icon {
+  0% {
+    transform: scale(1);
+  }
+
+  25% {
+    transform: scale(1.15);
+  }
+
+  50% {
+    transform: scale(0.97);
+  }
+
+  75% {
+    transform: scale(1.05);
+  }
+
+  100% {
+    transform: scale(1);
+  }
+}
+
+
+/* ENLACE EFECTO HOVER */
+.enlace-efecto {
+  display: inline-block;
+  padding: 8px 16px;
+  border-radius: 6px;
+  text-decoration: none;
+  transition: box-shadow 0.2s, transform 0.2s, background 0.2s;
+  cursor: pointer;
+  color: #0d6efd;
+  /* azul Bootstrap */
+}
+
+.enlace-efecto:hover {
+  box-shadow: 0 8px 32px rgba(13, 110, 253, 0.18), 0 2px 8px rgba(0, 0, 0, 0.10);
+  transform: translateY(-4px) scale(1.03);
+}
+
+.enlace-efecto:hover i {
+  transform: scale(1.15);
+  transition: transform 0.2s;
 }
 
 /* Enlaces bonitos */
@@ -58,34 +197,318 @@ a.text-dark.text-decoration-none:hover,
   text-decoration: none;
   transition: all 0.2s;
 }
+
 .enlace-lupa {
   transition: color 0.2s, background 0.2s;
 }
+
 .enlace-lupa i {
   color: #0d6efd;
   margin-right: 2px;
+}
+
+/*CALENDARIO*/
+.calendario-table {
+  table-layout: fixed;
+}
+
+.calendario-dia {
+  cursor: pointer;
+  transition: all 0.3s ease;
+  position: relative;
+  overflow: hidden;
+  min-height: 120px;
+}
+
+/* Efecto hover mejorado */
+.calendario-dia:hover:not(.otro-mes) {
+  background-color: #f0f7ff;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.calendario-dia:hover .dia-numero {
+  color: #0d6efd;
+  transform: scale(1.1);
+  transition: all 0.3s ease;
+}
+
+.calendario-dia:hover .badge-contador {
+  transform: scale(1.1);
+  transition: all 0.3s ease;
+}
+
+.calendario-dia.otro-mes {
+  background-color: #fafafa;
+  opacity: 0.6;
+}
+
+.calendario-dia.dia-hoy {
+  background-color: #e3f2fd !important;
+  position: relative;
+}
+
+.calendario-dia.dia-hoy::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 3px;
+  background: linear-gradient(90deg, #2196F3 0%, #1976D2 100%);
+}
+
+/* Botón de agregar trabajo en el día */
+.dia-numero-wrapper {
+  position: relative;
+  display: inline-block;
+}
+
+.dia-numero {
+  transition: all 0.3s ease;
+  cursor: pointer;
+  display: inline-block;
+  padding: 4px 8px;
+  border-radius: 50%;
+  min-width: 30px;
+  text-align: center;
+}
+
+.btn-add-trabajo {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #28a745;
+  color: white;
+  border-radius: 50%;
+  opacity: 0;
+  transform: scale(0.8);
+  transition: all 0.3s ease;
+  cursor: pointer;
+  text-decoration: none;
+  font-size: 1.2rem;
+  font-weight: bold;
+}
+
+.dia-numero-wrapper:hover .btn-add-trabajo {
+  opacity: 1;
+  transform: scale(1);
+}
+
+.dia-numero-wrapper:hover .dia-numero {
+  opacity: 0;
+}
+
+/* No mostrar en días de otros meses */
+.otro-mes .btn-add-trabajo {
+  display: none;
+}
+
+/* Ajuste para día actual */
+.dia-hoy .btn-add-trabajo {
+  background-color: #17a2b8;
+}
+
+/* Animación de pulso para el botón */
+@keyframes pulse {
+  0% {
+    box-shadow: 0 0 0 0 rgba(40, 167, 69, 0.7);
+  }
+  70% {
+    box-shadow: 0 0 0 10px rgba(40, 167, 69, 0);
+  }
+  100% {
+    box-shadow: 0 0 0 0 rgba(40, 167, 69, 0);
+  }
+}
+
+.dia-numero-wrapper:hover .btn-add-trabajo {
+  animation: pulse 1.5s infinite;
+}
+
+/* Efecto especial para días sin trabajos */
+.calendario-dia:not(.otro-mes) .trabajos-dia:empty {
+  min-height: 30px;
+  border: 2px dashed transparent;
+  transition: all 0.3s ease;
+}
+
+.calendario-dia:not(.otro-mes):hover .trabajos-dia:empty {
+  border-color: #28a745;
+  background-color: rgba(40, 167, 69, 0.05);
+}
+
+/*--- --- --- --- --- --- --- --- --- --- ---*/
+
+/* Efectos para trabajos */
+.trabajo-item {
+  transition: all 0.3s ease;
+  cursor: move;
+  margin-bottom: 4px;
+}
+
+.trabajo-item:hover {
+  transform: translateX(5px);
+}
+
+.trabajo-card {
+  transition: all 0.3s ease;
+}
+
+.trabajo-card:hover {
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+  transform: scale(1.02);
+}
+
+/* Drag and drop */
+.trabajo-item.dragging {
+  opacity: 0.5;
+  cursor: grabbing;
+}
+
+.calendario-dia.drag-over {
+  background-color: #e8f5e9 !important;
+  border: 2px dashed #4caf50;
+}
+
+.trabajos-dia {
+  min-height: 50px;
+  padding: 4px;
+}
+
+/* Animaciones */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.trabajo-item {
+  animation: fadeIn 0.3s ease;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .calendario-table {
+    font-size: 0.8rem;
+  }
+  
+  .calendario-dia {
+    min-height: 100px !important;
+  }
+  
+  .trabajo-card {
+    font-size: 0.7rem !important;
+    padding: 0.25rem !important;
+  }
+  
+  .trabajo-item i {
+    display: none;
+  }
+}
+
+/* Efectos para trabajos */
+.trabajo-item {
+  transition: all 0.3s ease;
+  cursor: move;
+}
+
+.trabajo-item:hover {
+  transform: translateX(5px);
+}
+
+.trabajo-card:hover {
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+  transform: scale(1.02);
+}
+
+/* Drag and drop */
+.trabajo-item.dragging {
+  opacity: 0.5;
+  cursor: grabbing;
+}
+
+.calendario-dia.drag-over {
+  background-color: #e8f5e9 !important;
+  border: 2px dashed #4caf50;
+}
+
+/* Animaciones */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.trabajo-item {
+  animation: fadeIn 0.3s ease;
+}
+
+/* Vista semana */
+.vista-semana .calendario-dia {
+  min-height: 200px;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .calendario-table {
+    font-size: 0.8rem;
+  }
+
+  .calendario-dia {
+    height: 100px !important;
+  }
+
+  .trabajo-card {
+    font-size: 0.7rem !important;
+    padding: 0.25rem !important;
+  }
+
+  .trabajo-item i {
+    display: none;
+  }
 }
 
 /* Tablas responsivas */
 .table-responsive {
   margin-bottom: 1rem;
 }
+
 .table-responsive::-webkit-scrollbar {
   height: 8px;
 }
+
 .table-responsive::-webkit-scrollbar-thumb {
   background: #dee2e6;
   border-radius: 4px;
 }
 
 /* Botones responsivos en filas */
-.d-grid.gap-2 > .btn,
-.d-grid.gap-2 > .btn + .btn {
+.d-grid.gap-2>.btn,
+.d-grid.gap-2>.btn+.btn {
   margin-bottom: 0.5rem;
 }
+
 @media (min-width: 768px) {
-  .d-grid.gap-2 > .btn,
-  .d-grid.gap-2 > .btn + .btn {
+
+  .d-grid.gap-2>.btn,
+  .d-grid.gap-2>.btn+.btn {
     margin-bottom: 0;
   }
 }

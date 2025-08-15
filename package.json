@@ -7,9 +7,13 @@
   "scripts": {
     "start": "electron .",
     "dev": "nodemon src/server.js",
+    "clean": "rimraf dist",
     "build": "electron-builder",
-    "gen-db": "node src/utils/generate_sql_db.js",
-    "gen-admin": "node src/utils/generate_admin.js"
+    "build-w": "electron-builder --win",
+    "gen-db": "node src/helpers/generate_sql_db.js",
+    "gen-admin": "node src/helpers/generate_admin.js",
+    "reset-electron-db": "node src/helpers/reset-electron-db.js",
+    "copy-dev-db": "node src/helpers/copy-dev-db-to-electron.js"
   },
   "dependencies": {
     "adm-zip": "^0.5.16",
@@ -39,14 +43,17 @@
   "build": {
     "appId": "com.dengunorte.techdashboard",
     "productName": "Tech-Dashboard",
+    "icon": "public/icon/icon.ico",
+    "win": {
+      "target": "nsis"
+    },
     "directories": {
       "output": "dist"
     },
     "files": [
+      "main.js",
       "src/**/*",
       "public/**/*",
-      "main.js",
-      "package.json",
       "config/**/*",
       "utils/**/*",
       "credentials.json"
@@ -56,7 +63,17 @@
         "from": "src/data/tech-dashboard.db",
         "to": "data/tech-dashboard.db"
       },
-      "uploads/"
-    ]
+      {
+        "from": "uploads/",
+        "to": "uploads/"
+      }
+    ],
+    "nsis": {
+      "oneClick": false,
+      "allowToChangeInstallationDirectory": true,
+      "createDesktopShortcut": true,
+      "createStartMenuShortcut": true,
+      "shortcutName": "Tech-Dashboard"
+    }
   }
 }

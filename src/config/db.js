@@ -3,13 +3,27 @@
 const sqlite3 = require('sqlite3').verbose();
 const path = require('path');
 const fs = require('fs');
-const { app } = require('electron');
 
 let dbPath;
 
-if (app.isPackaged) {
-  // Producción: usar carpeta accesible
-  const userDataPath = app.getPath('userData');
+// Detecta si está en Electron y si es build (producción)
+const isElectron = !!process.versions.electron;
+let isPackaged = false;
+let userDataPath = null;
+
+if (isElectron) {
+  try {
+    const electron = require('electron');
+    isPackaged = (electron.app || electron.remote.app).isPackaged;
+    userDataPath = (electron.app || electron.remote.app).getPath('userData');
+  } catch (e) {
+    isPackaged = false;
+    userDataPath = null;
+  }
+}
+
+if (isElectron && isPackaged && userDataPath) {
+  // Producción: usar carpeta accesible del usuario
   dbPath = path.join(userDataPath, 'tech-dashboard.db');
 
   // Copiar desde resources si no existe
@@ -23,7 +37,7 @@ if (app.isPackaged) {
     }
   }
 } else {
-  // Desarrollo
+  // Desarrollo (Node.js puro o Electron dev)
   dbPath = path.join(__dirname, '../data/tech-dashboard.db');
 }
 

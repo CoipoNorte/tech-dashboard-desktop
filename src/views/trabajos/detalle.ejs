@@ -1,15 +1,29 @@
 <%- include('../partials/header', { title }) %>
+<%
+  function isActive(param, value) {
+    return (param && param == value) ? 'active' : '';
+  }
+
+  function formatFecha(fecha) {
+    if (!fecha) return '';
+    const [año, mes, dia] = fecha.split('-');
+    return `${dia}/${mes}/${año}`;
+  }
+%>
+
 <div class="row justify-content-center">
   <div class="col-lg-8">
     <div class="card shadow mb-4">
       <div class="card-body">
         <div class="d-flex align-items-center mb-3">
-          <span class="d-inline-flex align-items-center justify-content-center rounded-circle me-3"
-                style="background-color: <%= trabajo.estado_color || '#ccc' %>; width:3rem; height:3rem;">
+          <span class="d-inline-flex align-items-center justify-content-center rounded-circle me-3" style="background-color: <%= trabajo.estado_color || '#ccc' %>; width:3rem; height:3rem;">
             <i class="<%= trabajo.categoria_icono || 'bi bi-tag' %>" style="font-size:1.7rem; color:#fff"></i>
           </span>
           <div>
-            <h2 class="mb-0"><%= trabajo.descripcion %></h2>
+            <h2 class="mb-0">
+              <%= trabajo.descripcion.length > 45 ? trabajo.descripcion.slice(0, 45) + '...' : trabajo.descripcion %>
+            </h2>
+
             <div class="text-muted">
               <i class="bi bi-person"></i>
               <a href="/clientes/<%= trabajo.cliente_id %>" class="fw-bold text-dark text-decoration-none enlace-lupa">
@@ -20,13 +34,11 @@
         </div>
         <hr>
         <div class="mb-3">
-          <span class="badge"
-            style="background-color: <%= trabajo.estado_color || '#ccc' %>; color: #fff; font-size:1rem;">
+          <span class="badge" style="background-color: <%= trabajo.estado_color || '#ccc' %>; color: #fff; font-size:1rem;">
             <i class="<%= trabajo.estado_icono || 'bi bi-flag' %>"></i>
             <%= trabajo.estado_nombre %>
           </span>
-          <span class="badge ms-2"
-            style="background-color: <%= trabajo.urgencia_color || '#ccc' %>; color: #fff; font-size:1rem;">
+          <span class="badge ms-2" style="background-color: <%= trabajo.urgencia_color || '#ccc' %>; color: #fff; font-size:1rem;">
             <i class="<%= trabajo.urgencia_icono || 'bi bi-exclamation-circle-fill' %>"></i>
             <%= trabajo.urgencia_nombre %>
           </span>
@@ -36,25 +48,22 @@
         </div>
         <div class="mb-3">
           <strong><i class="bi bi-calendar-plus"></i> Ingreso:</strong>
-          <%= trabajo.fechaIngreso ? new Date(trabajo.fechaIngreso).toLocaleDateString('es-ES') : '' %>
+          <%= formatFecha(trabajo.fechaIngreso) %>
           <span class="ms-3"><strong><i class="bi bi-calendar-check"></i> Entrega:</strong>
-            <%= trabajo.fechaEntrega ? new Date(trabajo.fechaEntrega).toLocaleDateString('es-ES') : '' %>
-          </span>
+            <%= formatFecha(trabajo.fechaEntrega) %></span>
         </div>
         <div class="mb-3 d-flex align-items-center justify-content-between">
           <div>
             <strong><i class="bi bi-tags"></i> Categoría:</strong>
             <%= trabajo.categoria_nombre %>
             <% if (trabajo.estado_icono) { %>
-              <i class="<%= trabajo.estado_icono %> ms-2"
-                style="font-size:1.1rem; color:<%= trabajo.estado_color %>;">
-              </i>
+            <i class="<%= trabajo.estado_icono %> ms-2" style="font-size:1.1rem; color:<%= trabajo.estado_color %>;">
+            </i>
             <% } %>
           </div>
           <% if (trabajo.categoria_icono) { %>
-            <i class="<%= trabajo.categoria_icono %> ms-2"
-              style="font-size:2rem; color:<%= trabajo.estado_color || '#6c757d' %>;">
-            </i>
+          <i class="<%= trabajo.categoria_icono %> ms-2" style="font-size:2rem; color:<%= trabajo.estado_color || '#6c757d' %>;">
+          </i>
           <% } %>
         </div>
         <div class="mb-3">
@@ -71,24 +80,23 @@
         </div>
         <!-- Lista de nombres de imágenes -->
         <% if (trabajo.imagenes && trabajo.imagenes.length > 0) { %>
-          <div class="mb-4">
-            <h5>Archivos en Google Drive:</h5>
-            <ul class="list-group">
-              <% trabajo.imagenes.forEach(img => { %>
-                <li class="list-group-item d-flex justify-content-between align-items-center">
-                  <span class="small text-muted fw-bold">
-                    <%= img.nombre || '' %>
-                  </span>
-                  <a href="<%= img.url %>" class="btn btn-sm btn-outline-success" title="Ver/Descargar en Drive"
-                    target="_blank">
-                    <i class="bi bi-download"></i>
-                  </a>
-                </li>
-              <% }) %>
-            </ul>
-          </div>
+        <div class="mb-4">
+          <h5>Archivos en Google Drive:</h5>
+          <ul class="list-group">
+            <% trabajo.imagenes.forEach(img => { %>
+            <li class="list-group-item d-flex justify-content-between align-items-center">
+              <span class="small text-muted fw-bold">
+                <%= img.nombre || '' %>
+              </span>
+              <a href="<%= img.url %>" class="btn btn-sm btn-outline-success" title="Ver/Descargar en Drive" target="_blank">
+                <i class="bi bi-download"></i>
+              </a>
+            </li>
+            <% }) %>
+          </ul>
+        </div>
         <% } else { %>
-          <div class="mb-4 text-center text-muted">No hay imágenes en este trabajo.</div>
+        <div class="mb-4 text-center text-muted">No hay imágenes en este trabajo.</div>
         <% } %>
         <div class="row mt-4 g-2">
           <div class="col-12 col-md-4 d-grid">
@@ -102,13 +110,23 @@
             </a>
           </div>
           <div class="col-12 col-md-4 d-grid">
-            <a href="/trabajos" class="btn btn-secondary">
-              <i class="bi bi-arrow-left"></i> Volver
-            </a>
+            <button id="btnCopiarBoleta" class="btn btn-secondary" onclick="copiarBoletaServicio(this)" data-descripcion="<%= trabajo.descripcion %>" data-cliente="<%= trabajo.cliente_nombre %>" data-precio="<%= trabajo.precio %>" data-ingreso="<%= trabajo.fechaIngreso ? new Date(trabajo.fechaIngreso).toLocaleDateString('es-CL') : 'Sin fecha' %>" data-entrega="<%= trabajo.fechaEntrega ? new Date(trabajo.fechaEntrega).toLocaleDateString('es-CL') : 'Sin fecha' %>" data-categoria="<%= trabajo.categoria_nombre %>" data-estado="<%= trabajo.estado_nombre %>" data-urgencia="<%= trabajo.urgencia_nombre %>" data-observaciones="<%= trabajo.observaciones || 'Sin observaciones' %>">
+              <i class="bi bi-clipboard-check me-1"></i> Copiar boleta
+            </button>
+
           </div>
         </div>
       </div>
     </div>
   </div>
 </div>
+
+<script type="module">
+  import {
+    copiarBoletaServicio
+  } from '/js/boleta.js';
+  window.copiarBoletaServicio = copiarBoletaServicio;
+</script>
+<script src="/js/boleta.js"></script>
+
 <%- include('../partials/footer') %>

@@ -16,6 +16,12 @@ const upload = multer({ storage });
 router.get('/', requireLogin, trabajoController.listar);
 router.get('/nuevo', requireLogin, trabajoController.formNuevo);
 router.post('/', requireLogin, upload.array('imagenes'), trabajoController.crear);
+router.get('/calendario', requireLogin, trabajoController.calendario);
+
+// Ruta para actualizar fecha - cambiar a POST
+router.post('/:id/actualizar-fecha', requireLogin, trabajoController.actualizarFechaEntrega);
+
+// ID ROUTES
 router.get('/:id/editar', requireLogin, trabajoController.formEditar);
 router.post('/:id', requireLogin, upload.array('imagenes'), trabajoController.editar);
 router.post('/:id/eliminar', requireLogin, trabajoController.eliminar);

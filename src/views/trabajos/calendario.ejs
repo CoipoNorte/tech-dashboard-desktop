@@ -1,0 +1,303 @@
+<%- include('../partials/header', { title }) %>
+
+<div class="container-fluid">
+  <div class="d-flex justify-content-between align-items-center mb-4">
+    <h1><i class="bi bi-calendar3"></i> Calendario de Entregas</h1>
+    <div class="d-flex gap-2">
+      <!-- Botones de vista -->
+      <div class="btn-group" role="group">
+        <a href="/trabajos/calendario?vista=semana&mes=<%= mes %>&anio=<%= anio %>&<%= new URLSearchParams(filtros).toString() %>" class="btn btn-outline-secondary btn-sm <%= vista === 'semana' ? 'active' : '' %>">
+          <i class="bi bi-calendar-week"></i> Semana
+        </a>
+        <a href="/trabajos/calendario?vista=mes&mes=<%= mes %>&anio=<%= anio %>&<%= new URLSearchParams(filtros).toString() %>" class="btn btn-outline-secondary btn-sm <%= vista === 'mes' ? 'active' : '' %>">
+          <i class="bi bi-calendar-month"></i> Mes
+        </a>
+      </div>
+      <a href="/trabajos" class="btn btn-outline-secondary btn-sm">
+        <i class="bi bi-list-ul"></i> Vista Lista
+      </a>
+    </div>
+  </div>
+
+  <!-- Filtros -->
+  <div class="card shadow-sm mb-3">
+    <div class="card-body py-2">
+      <form method="get" class="d-flex flex-wrap align-items-center gap-3">
+        <input type="hidden" name="vista" value="<%= vista %>">
+        <input type="hidden" name="mes" value="<%= mes %>">
+        <input type="hidden" name="anio" value="<%= anio %>">
+        <% if (vista === 'semana') { %>
+        <input type="hidden" name="semana" value="<%= semana %>">
+        <% } %>
+
+        <div class="d-flex align-items-center gap-2">
+          <label class="mb-0 text-nowrap">Categoría:</label>
+          <select name="categoria" class="form-select form-select-sm" onchange="this.form.submit()">
+            <option value="">Todas</option>
+            <% categorias.forEach(cat => { %>
+            <option value="<%= cat.id %>" <%= filtros.categoria == cat.id ? 'selected' : '' %>>
+              <%= cat.nombre %>
+            </option>
+            <% }) %>
+          </select>
+        </div>
+
+        <div class="d-flex align-items-center gap-2">
+          <label class="mb-0 text-nowrap">Estado:</label>
+          <select name="estado" class="form-select form-select-sm" onchange="this.form.submit()">
+            <option value="">Todos</option>
+            <% estados.forEach(est => { %>
+            <option value="<%= est.id %>" <%= filtros.estado == est.id ? 'selected' : '' %>>
+              <%= est.nombre %>
+            </option>
+            <% }) %>
+          </select>
+        </div>
+
+        <% if (filtros.categoria || filtros.estado) { %>
+        <a href="/trabajos/calendario?vista=<%= vista %>&mes=<%= mes %>&anio=<%= anio %><%= vista === 'semana' ? '&semana=' + semana : '' %>" class="btn btn-sm btn-outline-secondary">
+          <i class="bi bi-x-circle"></i> Limpiar filtros
+        </a>
+        <% } %>
+      </form>
+    </div>
+  </div>
+
+  <!-- Controles de navegación -->
+  <div class="card shadow-sm mb-4">
+    <div class="card-body">
+      <div class="d-flex justify-content-between align-items-center">
+        <% if (vista === 'mes') { %>
+        <a href="/trabajos/calendario?vista=mes&mes=<%= mes === 1 ? 12 : mes - 1 %>&anio=<%= mes === 1 ? anio - 1 : anio %>&<%= new URLSearchParams(filtros).toString() %>" class="btn btn-outline-primary">
+          <i class="bi bi-chevron-left"></i> Anterior
+        </a>
+
+        <h3 class="mb-0">
+          <%= new Date(anio, mes - 1).toLocaleDateString('es-ES', { month: 'long', year: 'numeric' }).toUpperCase() %>
+        </h3>
+
+        <a href="/trabajos/calendario?vista=mes&mes=<%= mes === 12 ? 1 : mes + 1 %>&anio=<%= mes === 12 ? anio + 1 : anio %>&<%= new URLSearchParams(filtros).toString() %>" class="btn btn-outline-primary">
+          Siguiente <i class="bi bi-chevron-right"></i>
+        </a>
+        <% } else { %>
+        <a href="/trabajos/calendario?vista=semana&semana=<%= semana - 1 %>&mes=<%= mes %>&anio=<%= anio %>&<%= new URLSearchParams(filtros).toString() %>" class="btn btn-outline-primary">
+          <i class="bi bi-chevron-left"></i> Semana anterior
+        </a>
+
+        <h3 class="mb-0">
+          Semana <%= semana %> - <%= new Date(anio, mesRealSemana - 1).toLocaleDateString('es-ES', { month: 'long', year: 'numeric' }) %>
+        </h3>
+
+        <a href="/trabajos/calendario?vista=semana&semana=<%= semana + 1 %>&mes=<%= mes %>&anio=<%= anio %>&<%= new URLSearchParams(filtros).toString() %>" class="btn btn-outline-primary">
+          Semana siguiente <i class="bi bi-chevron-right"></i>
+        </a>
+        <% } %>
+      </div>
+    </div>
+  </div>
+
+  <!-- Calendario -->
+  <div class="card shadow">
+    <div class="card-body p-0">
+      <div class="table-responsive">
+        <table class="table table-bordered mb-0 calendario-table">
+          <thead>
+            <tr class="text-center">
+              <th class="text-danger">Domingo</th>
+              <th>Lunes</th>
+              <th>Martes</th>
+              <th>Miércoles</th>
+              <th>Jueves</th>
+              <th>Viernes</th>
+              <th class="text-primary">Sábado</th>
+            </tr>
+          </thead>
+          <tbody>
+            <%
+              if (vista === 'semana') {
+                // Vista semana
+                const primerDiaAnio = new Date(anio, 0, 1);
+                const diasParaSemana = (semana - 1) * 7 - primerDiaAnio.getDay();
+                const fechasAMostrar = [];
+                
+                for (let i = 0; i < 7; i++) {
+                  const fecha = new Date(anio, 0, diasParaSemana + i + 1);
+                  fechasAMostrar.push(fecha);
+                }
+            %>
+            <tr>
+              <% fechasAMostrar.forEach(fecha => {
+                  const fechaStr = fecha.toISOString().split('T')[0];
+                  const trabajosDelDia = trabajosPorFecha[fechaStr] || [];
+                  const esHoy = fecha.toDateString() === new Date().toDateString();
+                  const esMesActual = fecha.getMonth() + 1 === mesRealSemana;
+                  const esOtroMes = !esMesActual;
+                %>
+              <td class="calendario-dia <%= !esMesActual ? 'otro-mes' : '' %> <%= esHoy ? 'dia-hoy' : '' %>" data-fecha="<%= fechaStr %>" style="height: 200px; vertical-align: top;">
+                <div class="p-2 h-100 d-flex flex-column">
+                  <div class="d-flex justify-content-between align-items-start mb-2 dia-header">
+                    <div>
+                      <div class="dia-numero-wrapper">
+                        <span class="dia-numero fw-bold <%= !esMesActual ? 'text-muted' : '' %>">
+                          <%= fecha.getDate() %>
+                        </span>
+                        <% if (!esOtroMes) { %>
+                        <a href="/trabajos/nuevo?fechaIngreso=<%= fechaStr %>" class="btn-add-trabajo" title="Agregar trabajo para este día">
+                          <i class="bi bi-plus"></i>
+                        </a>
+                        <% } %>
+                      </div>
+                      <small class="d-block text-muted">
+                        <%= fecha.toLocaleDateString('es-ES', { month: 'short' }) %>
+                      </small>
+                    </div>
+                    <% if (trabajosDelDia.length > 0) { %>
+                    <span class="badge bg-primary badge-contador">
+                      <%= trabajosDelDia.length %>
+                    </span>
+                    <% } %>
+                  </div>
+
+                  <div class="trabajos-dia flex-grow-1 overflow-auto" ondrop="drop(event)" ondragover="allowDrop(event)" ondragenter="dragEnter(event)" ondragleave="dragLeave(event)">
+                    <% trabajosDelDia.forEach(trabajo => { %>
+                    <div class="trabajo-item" draggable="true" ondragstart="drag(event)" ondragend="dragEnd(event)" data-trabajo-id="<%= trabajo.id %>" data-bs-toggle="tooltip" data-bs-placement="top" title="<%= trabajo.descripcion %> - <%= trabajo.cliente_nombre %>">
+                      <a href="/trabajos/<%= trabajo.id %>" class="d-block text-decoration-none">
+                        <div class="trabajo-card d-flex align-items-center small p-2 rounded" style="background-color: <%= trabajo.estado_color %>15; 
+                                          border-left: 3px solid <%= trabajo.estado_color %>;">
+                          <i class="<%= trabajo.categoria_icono %> me-2" style="color: <%= trabajo.estado_color %>; font-size: 1rem;"></i>
+                          <span class="text-truncate flex-grow-1" style="font-size: 0.8rem;">
+                            <%= trabajo.descripcion.substring(0, 20) %>...
+                          </span>
+                          <% if (trabajo.urgencia_color) { %>
+                          <i class="bi bi-exclamation-circle-fill ms-1" style="color: <%= trabajo.urgencia_color %>; font-size: 0.8rem;"></i>
+                          <% } %>
+                        </div>
+                      </a>
+                    </div>
+                    <% }) %>
+                  </div>
+                </div>
+              </td>
+              <% }) %>
+            </tr>
+            <%
+              } else {
+                // Vista mes
+                const primerDia = new Date(anio, mes - 1, 1).getDay();
+                const diasEnMes = new Date(anio, mes, 0).getDate();
+                const diasMesAnterior = new Date(anio, mes - 1, 0).getDate();
+                
+                let diaActual = 1;
+                let semanas = Math.ceil((primerDia + diasEnMes) / 7);
+                
+                for (let sem = 0; sem < semanas; sem++) {
+            %>
+            <tr>
+              <% for (let diaSemana = 0; diaSemana < 7; diaSemana++) {
+                  let numeroDia = 0;
+                  let mesActual = mes;
+                  let anioActual = anio;
+                  let esOtroMes = false;
+                  
+                  if (sem === 0 && diaSemana < primerDia) {
+                    numeroDia = diasMesAnterior - primerDia + diaSemana + 1;
+                    mesActual = mes === 1 ? 12 : mes - 1;
+                    anioActual = mes === 1 ? anio - 1 : anio;
+                    esOtroMes = true;
+                  } else if (diaActual <= diasEnMes) {
+                    numeroDia = diaActual++;
+                  } else {
+                    numeroDia = diaActual++ - diasEnMes;
+                    mesActual = mes === 12 ? 1 : mes + 1;
+                    anioActual = mes === 12 ? anio + 1 : anio;
+                    esOtroMes = true;
+                  }
+                  
+                  const fechaCompleta = `${anioActual}-${mesActual.toString().padStart(2, '0')}-${numeroDia.toString().padStart(2, '0')}`;
+                  const trabajosDelDia = trabajosPorFecha[fechaCompleta] || [];
+                  const esHoy = !esOtroMes && 
+                                new Date().getDate() === numeroDia && 
+                                new Date().getMonth() + 1 === mes && 
+                                new Date().getFullYear() === anio;
+                %>
+              <td class="calendario-dia <%= esOtroMes ? 'otro-mes' : '' %> <%= esHoy ? 'dia-hoy' : '' %>" data-fecha="<%= fechaCompleta %>" style="height: 120px; vertical-align: top;">
+                <div class="p-2 h-100 d-flex flex-column">
+                  <div class="d-flex justify-content-between align-items-start mb-2 dia-header">
+                    <div class="dia-numero-wrapper">
+                      <span class="dia-numero fw-bold <%= esOtroMes ? 'text-muted' : '' %>">
+                        <%= numeroDia %>
+                      </span>
+                      <% if (!esOtroMes) { %>
+                      <a href="/trabajos/nuevo?fechaIngreso=<%= fechaCompleta %>" class="btn-add-trabajo" title="Agregar trabajo para este día">
+                        <i class="bi bi-plus"></i>
+                      </a>
+                      <% } %>
+                    </div>
+                    <% if (trabajosDelDia.length > 0) { %>
+                    <span class="badge bg-primary badge-contador">
+                      <%= trabajosDelDia.length %>
+                    </span>
+                    <% } %>
+                  </div>
+
+                  <div class="trabajos-dia flex-grow-1" ondrop="drop(event)" ondragover="allowDrop(event)" ondragenter="dragEnter(event)" ondragleave="dragLeave(event)">
+                    <% trabajosDelDia.slice(0, 3).forEach(trabajo => { %>
+                    <div class="trabajo-item" draggable="true" ondragstart="drag(event)" ondragend="dragEnd(event)" data-trabajo-id="<%= trabajo.id %>" data-bs-toggle="tooltip" data-bs-placement="top" title="<%= trabajo.descripcion %> - <%= trabajo.cliente_nombre %>">
+                      <a href="/trabajos/<%= trabajo.id %>" class="d-block text-decoration-none">
+                        <div class="trabajo-card d-flex align-items-center small p-1 rounded" style="background-color: <%= trabajo.estado_color %>15; 
+                                          border-left: 3px solid <%= trabajo.estado_color %>;">
+                          <i class="<%= trabajo.categoria_icono %> me-1" style="color: <%= trabajo.estado_color %>; font-size: 0.9rem;"></i>
+                          <span class="text-truncate flex-grow-1" style="font-size: 0.75rem;">
+                            <%= trabajo.descripcion.substring(0, 15) %>...
+                          </span>
+                          <% if (trabajo.urgencia_color) { %>
+                          <i class="bi bi-exclamation-circle-fill ms-1" style="color: <%= trabajo.urgencia_color %>; font-size: 0.7rem;"></i>
+                          <% } %>
+                        </div>
+                      </a>
+                    </div>
+                    <% }) %>
+
+                    <% if (trabajosDelDia.length > 3) { %>
+                    <a href="/trabajos?fechaEntrega=<%= fechaCompleta %>" class="text-muted small text-decoration-none d-block text-center">
+                      +<%= trabajosDelDia.length - 3 %> más
+                    </a>
+                    <% } %>
+                  </div>
+                </div>
+              </td>
+              <% } %>
+            </tr>
+            <% }
+              } %>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <!-- Leyenda -->
+  <div class="card mt-4">
+    <div class="card-body">
+      <h5 class="card-title">Leyenda</h5>
+      <div class="d-flex flex-wrap gap-3">
+        <div>
+          <i class="bi bi-circle-fill text-danger"></i> Alta urgencia
+        </div>
+        <div>
+          <i class="bi bi-circle-fill text-warning"></i> Media urgencia
+        </div>
+        <div>
+          <i class="bi bi-circle-fill text-success"></i> Baja urgencia
+        </div>
+        <div class="ms-auto">
+          <i class="bi bi-grip-vertical text-muted"></i> Arrastra los trabajos para cambiar fecha
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script src="/js/calendario.js"></script>
+
+<%- include('../partials/footer') %>

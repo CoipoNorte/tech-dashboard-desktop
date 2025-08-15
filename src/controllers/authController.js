@@ -21,7 +21,7 @@ exports.login = (req, res) => {
       return res.render('auth/login', { title: 'Iniciar sesión', error: 'Usuario o contraseña incorrectos' });
     }
     req.session.usuarioId = usuario.id;
-    res.redirect('/dashboard');
+    res.redirect('/trabajos');
   });
 };
 

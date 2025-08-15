@@ -1,144 +1,342 @@
 <%- include('../partials/header', { title }) %>
-<h1><%= cliente.nombre %></h1>
-<p><strong>Teléfono:</strong> <%= cliente.telefono %></p>
-<p><strong>Email:</strong> <%= cliente.email %></p>
-<p><strong>Dirección:</strong> <%= cliente.direccion %></p>
-<p><strong>Observaciones:</strong> <%= cliente.observaciones %></p>
-<a href="/trabajos/nuevo?cliente=<%= cliente.id %>" class="btn btn-success mb-3">
-  <i class="bi bi-plus-circle"></i> Nuevo Trabajo para este cliente
-</a>
-<h3>Trabajos</h3>
 
-<!-- Tabla responsiva en escritorio -->
-<div class="d-none d-lg-block">
-  <div class="table-responsive">
-    <table class="table table-bordered align-middle">
-      <thead>
-        <tr>
-          <th>Descripción</th>
-          <th>Categoría</th>
-          <th>Precio</th>
-          <th>Ingreso</th>
-          <th>Entrega</th>
-          <th>Acciones</th>
-        </tr>
-      </thead>
-      <tbody>
-        <% trabajos.forEach(trabajo => { %>
-          <tr>
-            <td>
-              <a href="/trabajos/<%= trabajo.id %>" class="fw-bold text-dark text-decoration-none enlace-lupa">
-                <i class="bi bi-search"></i> <%= trabajo.descripcion %>
-              </a>
-            </td>
-            <td>
-              <div class="d-flex align-items-center justify-content-between">
-                <% if (trabajo.categoria_icono) { %>
-                  <i class="<%= trabajo.categoria_icono %> me-2"
-                    style="font-size:1.3rem; color:<%= trabajo.estado_color || '#6c757d' %>;">
-                  </i>
-                <% } %>
-                <span class="flex-grow-1 d-flex align-items-center justify-content-between">
-                  <span><%= trabajo.categoria_nombre %></span>
-                  <% if (trabajo.estado_icono) { %>
-                    <i class="<%= trabajo.estado_icono %> ms-2"
-                      style="font-size:0.9rem; color:<%= trabajo.estado_color %>;">
-                    </i>
-                  <% } %>
-                </span>
-              </div>
-            </td>
-            <td>$<%= trabajo.precio %></td>
-            <td><%= trabajo.fechaIngreso ? new Date(trabajo.fechaIngreso).toLocaleDateString('es-ES') : '' %></td>
-            <td>
-              <span class="d-flex align-items-center justify-content-between"
-                style="background-color: #f8f9fa; border-radius: 0.5rem; padding: 0.2rem 0.5rem;">
-                <span>
-                  <%= trabajo.fechaEntrega ? new Date(trabajo.fechaEntrega).toLocaleDateString('es-ES') : '' %>
-                </span>
-                <% if (trabajo.urgencia_icono) { %>
-                  <i class="<%= trabajo.urgencia_icono %>"
-                    style="color: <%= trabajo.urgencia_color %>; font-size:1.3rem; margin-left:8px"></i>
-                <% } %>
-              </span>
-            </td>
-            <td>
-              <a href="/trabajos/<%= trabajo.id %>/editar" class="btn btn-sm btn-primary" title="Editar">
-                <i class="bi bi-pencil"></i>
-              </a>
-              <form action="/trabajos/<%= trabajo.id %>/eliminar" method="post" style="display:inline;">
-                <button class="btn btn-sm btn-danger" onclick="return confirm('¿Eliminar trabajo?')" title="Eliminar">
-                  <i class="bi bi-trash"></i>
-                </button>
-              </form>
-            </td>
-          </tr>
-        <% }) %>
-      </tbody>
-    </table>
-  </div>
-</div>
+<%
+  function formatFecha(fecha) {
+    if (!fecha) return '';
+    const soloFecha = fecha.split('T')[0]; // "2025-08-15"
+    const [año, mes, dia] = soloFecha.split('-');
+    return `${dia}/${mes}/${año}`;
+  }
+%>
 
-<!-- Cards en móvil -->
-<div class="d-lg-none">
-  <div class="row g-3">
-    <% trabajos.forEach(trabajo => { %>
-      <div class="col-12">
-        <div class="card shadow-sm border-0">
-          <div class="card-body">
-            <div class="d-flex align-items-center mb-2">
-              <% if (trabajo.categoria_icono) { %>
-                <i class="<%= trabajo.categoria_icono %> me-2"
-                  style="font-size:1.3rem; color:<%= trabajo.estado_color || '#6c757d' %>;">
-                </i>
-              <% } %>
-              <div>
-                <a href="/trabajos/<%= trabajo.id %>" class="fw-bold text-dark text-decoration-none enlace-lupa" style="cursor:pointer;">
-                  <i class="bi bi-search"></i> <%= trabajo.descripcion %>
-                </a>
-                <div class="small text-muted d-flex align-items-center">
-                  <span><%= trabajo.categoria_nombre %></span>
-                  <% if (trabajo.estado_icono) { %>
-                    <i class="<%= trabajo.estado_icono %> ms-2"
-                      style="font-size:0.9rem; color:<%= trabajo.estado_color %>;">
-                    </i>
-                  <% } %>
+    <div class="container-fluid py-4">
+      <div class="row">
+        <div class="col-lg-4 mb-4">
+          <!-- Card de información del cliente -->
+          <div class="card shadow-sm">
+            <div class="card-header bg-primary text-white">
+              <h3 class="mb-0">
+                <i class="bi bi-person-circle"></i>
+                <%= cliente.nombre %>
+              </h3>
+            </div>
+            <div class="card-body">
+              <!-- Teléfono -->
+              <% if (cliente.telefono) { %>
+                <div class="mb-3 d-flex align-items-center justify-content-between">
+                  <div>
+                    <strong><i class="bi bi-telephone"></i> Teléfono:</strong>
+                    <p class="mb-0 ms-3" id="telefonoTexto">
+                      <%= cliente.telefono %>
+                    </p>
+                  </div>
+                  <button type="button" class="btn btn-sm btn-light copy-btn" data-copy="#telefonoTexto" title="Copiar">
+                    <i class="bi bi-clipboard"></i>
+                  </button>
                 </div>
+                <% } %>
+
+                  <!-- Email -->
+                  <% if (cliente.email) { %>
+                    <div class="mb-3 d-flex align-items-center justify-content-between">
+                      <div>
+                        <strong><i class="bi bi-envelope"></i> Email:</strong>
+                        <p class="mb-0 ms-3" id="emailTexto">
+                          <%= cliente.email %>
+                        </p>
+                      </div>
+                      <button type="button" class="btn btn-sm btn-light copy-btn" data-copy="#emailTexto"
+                        title="Copiar">
+                        <i class="bi bi-clipboard"></i>
+                      </button>
+                    </div>
+                    <% } %>
+
+                      <!-- Contacto Principal -->
+                      <% if (cliente.contacto && cliente.contacto_tipo) { %>
+                        <div class="mb-3">
+                          <strong>
+                            <% if (cliente.contacto_tipo==='whatsapp' ) { %>
+                              <i class="bi bi-whatsapp text-success"></i> WhatsApp:
+                              <% } else if (cliente.contacto_tipo==='instagram' ) { %>
+                                <i class="bi bi-instagram text-danger"></i> Instagram:
+                                <% } else if (cliente.contacto_tipo==='email' ) { %>
+                                  <i class="bi bi-envelope text-primary"></i> Email Principal:
+                                  <% } else if (cliente.contacto_tipo==='telefono' ) { %>
+                                    <i class="bi bi-telephone text-info"></i> Teléfono Principal:
+                                    <% } else if (cliente.contacto_tipo==='presencial' ) { %>
+                                      <i class="bi bi-person-check text-dark"></i> Contacto Presencial:
+                                      <% } %>
+                          </strong>
+                          <p class="mb-0 ms-3">
+                            <% if (cliente.contacto_tipo==='whatsapp' ) { %>
+                              <a href="https://wa.me/<%= cliente.contacto.replace(/[^0-9]/g, '') %>" target="_blank"
+                                class="text-decoration-none">
+                                <%= cliente.contacto %>
+                              </a>
+                              <% } else if (cliente.contacto_tipo==='instagram' ) { %>
+                                <a href="https://instagram.com/<%= cliente.contacto.replace('@', '') %>" target="_blank"
+                                  class="text-decoration-none">
+                                  <%= cliente.contacto %>
+                                </a>
+                                <% } else if (cliente.contacto_tipo==='email' ) { %>
+                                  <a href="mailto:<%= cliente.contacto %>" class="text-decoration-none">
+                                    <%= cliente.contacto %>
+                                  </a>
+                                  <% } else { %>
+                                    <%= cliente.contacto %>
+                                      <% } %>
+                          </p>
+                        </div>
+                        <% } %>
+
+                          <!-- Dirección -->
+                          <% if (cliente.direccion) { %>
+                            <div class="mb-3 d-flex align-items-center justify-content-between">
+                              <div>
+                                <strong><i class="bi bi-geo-alt"></i> Dirección:</strong>
+                                <p class="mb-0 ms-3" id="direccionTexto">
+                                  <%= cliente.direccion %>
+                                </p>
+                              </div>
+                              <button type="button" class="btn btn-sm btn-light copy-btn" data-copy="#direccionTexto"
+                                title="Copiar">
+                                <i class="bi bi-clipboard"></i>
+                              </button>
+                            </div>
+                            <% } %>
+
+                              <!-- Observaciones -->
+                              <% if (cliente.observaciones) { %>
+                                <div class="mb-3">
+                                  <strong><i class="bi bi-chat-left-text"></i> Observaciones:</strong>
+                                  <p class="mb-0 ms-3 text-muted">
+                                    <%= cliente.observaciones %>
+                                  </p>
+                                </div>
+                                <% } %>
+
+                                  <!-- Fecha de creación -->
+                                  <%
+                                    function corregirFecha(fechaRaw) {
+                                      if (!fechaRaw) return '';
+                                      const fecha = new Date(fechaRaw);
+                                    
+                                      // Sumamos 1 día (en milisegundos)
+                                      fecha.setDate(fecha.getDate() + 1);
+                                    
+                                      const opciones = { day: '2-digit', month: '2-digit', year: 'numeric' };
+                                      return fecha.toLocaleDateString('es-CL', opciones);
+                                    }
+                                  %>
+                                  
+                                  <% if (cliente.fechaCreacion) { %>
+                                    <div class="text-muted small">
+                                      <i class="bi bi-calendar-plus"></i> Cliente desde:
+                                      <%= corregirFecha(cliente.fechaCreacion) %>
+                                    </div>
+                                  <% } %>
+            </div>
+            <div class="card-footer">
+              <div class="d-grid gap-2">
+                <a href="/clientes/<%= cliente.id %>/editar" class="btn btn-outline-primary">
+                  <i class="bi bi-pencil"></i> Editar Cliente
+                </a>
+                <a href="/trabajos/nuevo?cliente=<%= cliente.id %>" class="btn btn-success">
+                  <i class="bi bi-plus-circle"></i> Nuevo Trabajo
+                </a>
               </div>
             </div>
-            <div class="mb-2">
-              <span class="badge"
-                style="background-color: <%= trabajo.estado_color || '#ccc' %>; color: #fff;">
-                <i class="<%= trabajo.estado_icono || 'bi bi-flag' %>"></i>
-                <%= trabajo.estado_nombre %>
-              </span>
-              <span class="badge ms-2"
-                style="background-color: <%= trabajo.urgencia_color || '#ccc' %>; color: #fff;">
-                <i class="<%= trabajo.urgencia_icono || 'bi bi-exclamation-circle-fill' %>"></i>
-                <%= trabajo.urgencia_nombre %>
-              </span>
-              <span class="badge ms-2 bg-secondary">
-                <i class="bi bi-cash-coin"></i> $<%= trabajo.precio %>
-              </span>
+          </div>
+        </div>
+
+        <div class="col-lg-8">
+          <!-- Sección de trabajos -->
+          <div class="d-flex justify-content-between align-items-center mb-3">
+            <h3><i class="bi bi-briefcase"></i> Trabajos</h3>
+            <span class="badge bg-secondary">Total: <%= trabajos.length %></span>
+          </div>
+
+          <!-- Tooltip adaptable -->
+          <div id="customTooltip" class="card shadow-sm position-fixed p-2 bg-light border"
+            style="display: none; width: 40vw; max-width: 600px; min-width: 250px; z-index: 9999;"></div>
+
+          <!-- Tabla responsiva en escritorio -->
+          <div class="d-none d-lg-block">
+            <div class="table-responsive">
+              <table class="table table-bordered align-middle">
+                <thead>
+                  <tr>
+                    <th>Descripción</th>
+                    <th>Categoría</th>
+                    <th>Precio</th>
+                    <th>Ingreso</th>
+                    <th>Entrega</th>
+                    <th></th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <% if (trabajos.length===0) { %>
+                    <tr>
+                      <td colspan="6" class="text-center text-muted py-4">
+                        <i class="bi bi-inbox" style="font-size: 2rem;"></i>
+                        <p class="mb-0">No hay trabajos registrados para este cliente</p>
+                      </td>
+                    </tr>
+                    <% } else { %>
+                      <% trabajos.forEach(trabajo=> { %>
+                        <tr>
+                          <td class="position-relative">
+                            <a href="/trabajos/<%= trabajo.id %>"
+                              class="enlace-efecto fw-bold text-dark text-decoration-none enlace-lupa text-truncate d-inline-block"
+                              style="max-width: 200px; cursor: pointer;"
+                              data-descripcion="<%- trabajo.descripcion.replace(/" /g, '&quot;' ) %>">
+                              <%= trabajo.descripcion.length> 50 ? trabajo.descripcion.slice(0, 50) + '...' :
+                                trabajo.descripcion %>
+                                <% if (trabajo.descripcion.length> 50) { %>
+                                  <i class="bi bi-three-dots ms-1 text-muted"></i>
+                                  <% } %>
+                            </a>
+                          </td>
+                          <td>
+                            <div class="d-flex align-items-center justify-content-between">
+                              <% if (trabajo.categoria_icono) { %>
+                                <i class="<%= trabajo.categoria_icono %> me-2"
+                                  style="font-size:1.3rem; color:<%= trabajo.estado_color || '#6c757d' %>;">
+                                </i>
+                                <% } %>
+                                  <span class="flex-grow-1 d-flex align-items-center justify-content-between">
+                                    <span>
+                                      <%= trabajo.categoria_nombre %>
+                                    </span>
+                                    <% if (trabajo.estado_icono) { %>
+                                      <i class="<%= trabajo.estado_icono %> ms-2"
+                                        style="font-size:0.9rem; color:<%= trabajo.estado_color %>;">
+                                      </i>
+                                      <% } %>
+                                  </span>
+                            </div>
+                          </td>
+                          <td>$<%= trabajo.precio %></td>
+                          <td>
+                            <%= formatFecha(trabajo.fechaIngreso) %>
+                          </td>
+                          <td>
+                            <span class="d-flex align-items-center justify-content-between"
+                              style="background-color: #f8f9fa; border-radius: 0.5rem; padding: 0.2rem 0.5rem;">
+                              <span>
+                                <%= formatFecha(trabajo.fechaEntrega) %>
+                              </span>
+                              <% if (trabajo.urgencia_icono) { %>
+                                <i class="<%= trabajo.urgencia_icono %>"
+                                  style="color: <%= trabajo.urgencia_color %>; font-size:1.3rem; margin-left:4px"></i>
+                                <% } %>
+                            </span>
+                          </td>
+                          <td class="text-center">
+                            <a href="/trabajos/<%= trabajo.id %>/editar" class="btn btn-sm btn-primary mb-1" title="Editar">
+                              <i class="bi bi-pencil"></i>
+                            </a>
+                            <form action="/trabajos/<%= trabajo.id %>/eliminar" method="post" style="display:inline;">
+                              <button class="btn btn-sm btn-danger" onclick="return confirm('¿Eliminar trabajo?')"
+                                title="Eliminar">
+                                <i class="bi bi-trash"></i>
+                              </button>
+                            </form>
+                          </td>
+                        </tr>
+                        <% }) %>
+                          <% } %>
+                </tbody>
+              </table>
             </div>
-            <div class="mb-2">
-              <strong>Ingreso:</strong> <%= trabajo.fechaIngreso ? new Date(trabajo.fechaIngreso).toLocaleDateString('es-ES') : '' %>
-              <span class="ms-2"><strong>Entrega:</strong> <%= trabajo.fechaEntrega ? new Date(trabajo.fechaEntrega).toLocaleDateString('es-ES') : '' %></span>
-            </div>
-            <div class="d-flex gap-2 mt-2">
-              <a href="/trabajos/<%= trabajo.id %>/editar" class="btn btn-sm btn-primary w-100" title="Editar">
-                <i class="bi bi-pencil"></i>
-              </a>
-              <form action="/trabajos/<%= trabajo.id %>/eliminar" method="post" style="display:inline; width:100%;">
-                <button class="btn btn-sm btn-danger w-100" onclick="return confirm('¿Eliminar trabajo?')" title="Eliminar">
-                  <i class="bi bi-trash"></i>
-                </button>
-              </form>
+          </div>
+
+          <!-- Cards en móvil -->
+          <div class="d-lg-none">
+            <div class="row g-3">
+              <% if (trabajos.length===0) { %>
+                <div class="col-12 text-center text-muted py-4">
+                  <i class="bi bi-inbox" style="font-size: 3rem;"></i>
+                  <p class="mb-0">No hay trabajos registrados para este cliente</p>
+                </div>
+                <% } else { %>
+                  <% trabajos.forEach(trabajo=> { %>
+                    <div class="col-12">
+                      <div class="card shadow-sm border-0">
+                        <div class="card-body">
+                          <div class="d-flex align-items-center mb-2">
+                            <% if (trabajo.categoria_icono) { %>
+                              <i class="<%= trabajo.categoria_icono %> me-2"
+                                style="font-size:1.3rem; color:<%= trabajo.estado_color || '#6c757d' %>;">
+                              </i>
+                              <% } %>
+                                <div>
+                                  <a href="/trabajos/<%= trabajo.id %>"
+                                    class="fw-bold text-dark text-decoration-none enlace-lupa" style="cursor:pointer;">
+                                    <%= trabajo.descripcion.length> 50 ? trabajo.descripcion.slice(0, 50) + '...' :
+                                      trabajo.descripcion %>
+                                  </a>
+                                  <div class="small text-muted d-flex align-items-center">
+                                    <span>
+                                      <%= trabajo.categoria_nombre %>
+                                    </span>
+                                    <% if (trabajo.estado_icono) { %>
+                                      <i class="<%= trabajo.estado_icono %> ms-2"
+                                        style="font-size:0.9rem; color:<%= trabajo.estado_color %>;">
+                                      </i>
+                                      <% } %>
+                                  </div>
+                                </div>
+                          </div>
+                          <div class="mb-2">
+                            <span class="badge"
+                              style="background-color: <%= trabajo.estado_color || '#ccc' %>; color: #fff;">
+                              <i class="<%= trabajo.estado_icono || 'bi bi-flag' %>"></i>
+                              <%= trabajo.estado_nombre %>
+                            </span>
+                            <span class="badge ms-2"
+                              style="background-color: <%= trabajo.urgencia_color || '#ccc' %>; color: #fff;">
+                              <i class="<%= trabajo.urgencia_icono || 'bi bi-exclamation-circle-fill' %>"></i>
+                              <%= trabajo.urgencia_nombre %>
+                            </span>
+                            <span class="badge ms-2 bg-secondary">
+                              <i class="bi bi-cash-coin"></i> $<%= trabajo.precio %>
+                            </span>
+                          </div>
+                          <div class="mb-2">
+                            <strong>Ingreso</strong>
+                            <%= formatFecha(trabajo.fechaIngreso) %>
+                            <br>
+                            <strong>Entrega</strong>
+                              <%= formatFecha(trabajo.fechaEntrega) %>
+                            </span>
+                          </div>
+                          <div class="d-flex gap-2 mt-2">
+                            <a href="/trabajos/<%= trabajo.id %>/editar" class="btn btn-sm btn-primary w-100"
+                              title="Editar">
+                              <i class="bi bi-pencil"></i>
+                            </a>
+                            <form action="/trabajos/<%= trabajo.id %>/eliminar" method="post"
+                              style="display:inline; width:100%;">
+                              <button class="btn btn-sm btn-danger w-100" onclick="return confirm('¿Eliminar trabajo?')"
+                                title="Eliminar">
+                                <i class="bi bi-trash"></i>
+                              </button>
+                            </form>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <% }) %>
+                      <% } %>
             </div>
           </div>
         </div>
       </div>
-    <% }) %>
-  </div>
-</div>
-<%- include('../partials/footer') %>
+    </div>
+
+    <script src="/js/btnCopy.js"></script>
+    <script src="/js/Tooltip.js"></script>
+
+    <%- include('../partials/footer') %>

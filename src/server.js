@@ -127,6 +127,8 @@ app.use('/usuarios', require('./routes/usuarios'));
 app.use('/urgencias', require('./routes/urgencias'));
 app.use('/herramientas', require('./routes/herramientas'));
 
+app.use('/api', require('./routes/api'));
+
 // 404
 app.use((req, res) => {
   res.status(404).render('404', { title: 'Página no encontrada' });
