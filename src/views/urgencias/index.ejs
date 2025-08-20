@@ -1,40 +1,176 @@
 <%- include('../partials/header', { title }) %>
-<h1>Urgencias</h1>
-<a href="/urgencias/nuevo" class="btn btn-success mb-3"><i class="bi bi-plus-circle"></i> Nueva Urgencia</a>
-<div class="table-responsive">
-  <table class="table table-striped align-middle">
-    <thead>
-      <tr>
-        <th>Nombre</th>
-        <th>Color</th>
-        <th>Icono</th>
-        <th>Acciones</th>
-      </tr>
-    </thead>
-    <tbody>
-      <% urgencias.forEach(urg => { %>
-        <tr>
-          <td><%= urg.nombre %></td>
-          <td>
-            <span class="badge" style="background-color: <%= urg.color %>"><%= urg.color %></span>
-          </td>
-          <td>
-            <i class="<%= urg.icono || 'bi bi-exclamation-circle-fill' %>" style="font-size:1.5rem"></i>
-            <span class="text-muted" style="font-size:0.9rem"><%= urg.icono || 'bi bi-exclamation-circle-fill' %></span>
-          </td>
-          <td>
-            <a href="/urgencias/<%= urg.id %>/editar" class="btn btn-sm btn-primary" title="Editar">
-              <i class="bi bi-pencil"></i>
-            </a>
-            <form action="/urgencias/<%= urg.id %>/eliminar" method="post" style="display:inline;">
-              <button class="btn btn-sm btn-danger" onclick="return confirm('¿Eliminar urgencia?')" title="Eliminar">
-                <i class="bi bi-trash"></i>
-              </button>
-            </form>
-          </td>
-        </tr>
+
+<div class="container-fluid">
+  <div class="d-flex justify-content-between align-items-center mb-4">
+    <h1><i class="bi bi-exclamation-triangle"></i> Urgencias</h1>
+
+    <div class="d-flex gap-2 align-items-center">
+      <!-- Botones de vista (solo en desktop) -->
+      <div class="btn-group d-none d-lg-flex" role="group">
+        <button type="button" class="btn btn-outline-secondary btn-sm active" id="viewTable" title="Vista tabla">
+          <i class="bi bi-list-ul"></i>
+        </button>
+        <button type="button" class="btn btn-outline-secondary btn-sm" id="viewCards" title="Vista tarjetas">
+          <i class="bi bi-grid-3x2-gap"></i>
+        </button>
+      </div>
+      
+      <!-- Botón nueva urgencia -->
+      <a href="/urgencias/nuevo" class="btn btn-success">
+        <i class="bi bi-plus-circle me-1"></i> Nueva Urgencia
+      </a>
+    </div>
+  </div>
+
+  <!-- Vista de TABLA (desktop) -->
+  <div class="d-none d-lg-block" id="tableView">
+    <div class="card shadow-sm">
+      <div class="card-body p-0">
+        <div class="table-responsive">
+          <table class="table table-hover align-middle mb-0">
+            <thead class="table-light">
+              <tr>
+                <th class="ps-4">#</th>
+                <th>Nombre</th>
+                <th>Color</th>
+                <th>Icono</th>
+                <th>Vista Previa</th>
+                <th class="text-end pe-4">Acciones</th>
+              </tr>
+            </thead>
+            <tbody>
+              <% urgencias.forEach((urg, index) => { %>
+                <tr>
+                  <td class="ps-4">
+                    <span class="badge bg-secondary"><%= index + 1 %></span>
+                  </td>
+                  <td>
+                    <div class="d-flex align-items-center">
+                      <i class="<%= urg.icono || 'bi bi-exclamation-circle-fill' %> me-2" 
+                         style="color: <%= urg.color %>; font-size: 1.2rem;"></i>
+                      <span class="fw-semibold"><%= urg.nombre %></span>
+                    </div>
+                  </td>
+                  <td>
+                    <div class="d-flex align-items-center">
+                      <div class="color-preview me-2" 
+                           style="width: 24px; height: 24px; background-color: <%= urg.color %>; 
+                                  border-radius: 4px; border: 1px solid #dee2e6;"></div>
+                      <code class="small"><%= urg.color %></code>
+                    </div>
+                  </td>
+                  <td>
+                    <div class="d-flex align-items-center">
+                      <i class="<%= urg.icono || 'bi bi-exclamation-circle-fill' %> me-2" 
+                         style="font-size: 1.5rem;"></i>
+                      <code class="small text-muted"><%= urg.icono || 'bi bi-exclamation-circle-fill' %></code>
+                    </div>
+                  </td>
+                  <td>
+                    <span class="badge" style="background-color: <%= urg.color %>; padding: 8px 12px;">
+                      <i class="<%= urg.icono || 'bi bi-exclamation-circle-fill' %> me-1"></i>
+                      <%= urg.nombre %>
+                    </span>
+                  </td>
+                  <td class="text-end pe-4">
+                    <div class="btn-group" role="group">
+                      <a href="/urgencias/<%= urg.id %>/editar" 
+                         class="btn btn-sm btn-outline-primary" 
+                         title="Editar">
+                        <i class="bi bi-pencil"></i>
+                      </a>
+                      <form action="/urgencias/<%= urg.id %>/eliminar" method="post" style="display:inline;">
+                        <button class="btn btn-sm btn-outline-danger" 
+                                onclick="return confirm('¿Estás seguro de eliminar esta urgencia?')" 
+                                title="Eliminar">
+                          <i class="bi bi-trash"></i>
+                        </button>
+                      </form>
+                    </div>
+                  </td>
+                </tr>
+              <% }) %>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Vista de CARDS -->
+  <div class="d-none" id="cardsView">
+    <div class="row g-3">
+      <% urgencias.forEach((urg, index) => { %>
+        <div class="col-12 col-md-6 col-lg-4">
+          <div class="card shadow-sm border-0 h-100">
+            <div class="card-body">
+              <!-- Header de la tarjeta -->
+              <div class="d-flex align-items-start mb-3">
+                <div class="icon-wrapper p-3 rounded-3 me-3" 
+                     style="background-color: <%= urg.color %>15;">
+                  <i class="<%= urg.icono || 'bi bi-exclamation-circle-fill' %>" 
+                     style="color: <%= urg.color %>; font-size: 2rem;"></i>
+                </div>
+                <div class="flex-grow-1">
+                  <h5 class="mb-1"><%= urg.nombre %></h5>
+                  <span class="badge bg-secondary">Nivel <%= index + 1 %></span>
+                </div>
+              </div>
+
+              <!-- Detalles -->
+              <div class="mb-3">
+                <div class="d-flex align-items-center mb-2">
+                  <span class="text-muted me-2">Color:</span>
+                  <div class="color-preview me-2" 
+                       style="width: 20px; height: 20px; background-color: <%= urg.color %>; 
+                              border-radius: 3px; border: 1px solid #dee2e6;"></div>
+                  <code class="small"><%= urg.color %></code>
+                </div>
+                <div class="d-flex align-items-center">
+                  <span class="text-muted me-2">Icono:</span>
+                  <code class="small"><%= urg.icono || 'bi bi-exclamation-circle-fill' %></code>
+                </div>
+              </div>
+
+              <!-- Vista previa -->
+              <div class="p-3 bg-light rounded-3 mb-3 text-center">
+                <span class="badge" style="background-color: <%= urg.color %>; padding: 10px 16px; font-size: 0.9rem;">
+                  <i class="<%= urg.icono || 'bi bi-exclamation-circle-fill' %> me-1"></i>
+                  <%= urg.nombre %>
+                </span>
+              </div>
+
+              <!-- Acciones -->
+              <div class="d-flex gap-2">
+                <a href="/urgencias/<%= urg.id %>/editar" class="btn btn-sm btn-primary flex-fill">
+                  <i class="bi bi-pencil"></i> Editar
+                </a>
+                <form action="/urgencias/<%= urg.id %>/eliminar" method="post" class="flex-fill">
+                  <button class="btn btn-sm btn-danger w-100" 
+                          onclick="return confirm('¿Estás seguro de eliminar esta urgencia?')">
+                    <i class="bi bi-trash"></i> Eliminar
+                  </button>
+                </form>
+              </div>
+            </div>
+          </div>
+        </div>
       <% }) %>
-    </tbody>
-  </table>
+    </div>
+  </div>
+
+  <!-- Mensaje si no hay urgencias -->
+  <% if (urgencias.length === 0) { %>
+    <div class="text-center py-5">
+      <i class="bi bi-exclamation-triangle" style="font-size: 4rem; color: #dee2e6;"></i>
+      <p class="text-muted mt-3">
+        No hay niveles de urgencia registrados aún
+      </p>
+      <a href="/urgencias/nuevo" class="btn btn-primary">
+        <i class="bi bi-plus-circle"></i> Agregar primera urgencia
+      </a>
+    </div>
+  <% } %>
 </div>
+
 <%- include('../partials/footer') %>

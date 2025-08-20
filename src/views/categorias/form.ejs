@@ -1,74 +1,97 @@
 <%- include('../partials/header', { title }) %>
-<h1><%= title %></h1>
-<form action="<%= action %>" method="post">
-  <div class="mb-3" style="max-width: 350px;">
-    <label>Nombre</label>
-    <div class="input-group">
-      <span class="input-group-text"><i class="bi bi-tags"></i></span>
-      <input type="text" name="nombre" class="form-control" value="<%= categoria.nombre || '' %>" required>
+
+<div class="container-fluid">
+  <div class="row justify-content-center">
+    <div class="col-12 col-md-10 col-lg-8">
+      <div class="card shadow-sm">
+        <div class="card-header bg-white py-3">
+          <h4 class="mb-0">
+            <i class="bi bi-tags me-2"></i>
+            <%= title %>
+          </h4>
+        </div>
+        <div class="card-body">
+          <form action="<%= action %>" method="post">
+            <!-- Campo Nombre -->
+            <div class="mb-4">
+              <label class="form-label fw-semibold">Nombre</label>
+              <div class="input-group">
+                <span class="input-group-text bg-light">
+                  <i class="bi bi-tags"></i>
+                </span>
+                <input type="text" 
+                       name="nombre" 
+                       class="form-control" 
+                       value="<%= categoria.nombre || '' %>" 
+                       placeholder="Ej: Computadoras, Celulares, Impresoras"
+                       required>
+              </div>
+            </div>
+
+            <!-- Selector de Iconos -->
+            <div class="mb-4">
+              <label class="form-label fw-semibold">Icono</label>
+              <input type="hidden" name="icono" id="iconoInput" value="<%= categoria.icono || 'bi bi-tag' %>">
+              
+              <div class="border rounded p-3 bg-light" style="max-height: 400px; overflow-y: auto;">
+                <div class="row g-2">
+                  <%
+                    const iconos = [
+                      'bi bi-tag', 'bi bi-laptop', 'bi bi-phone', 'bi bi-printer',
+                      'bi bi-tv', 'bi bi-cpu', 'bi bi-tools', 'bi bi-battery-charging',
+                      'bi bi-lightning', 'bi bi-gear', 'bi bi-wrench', 'bi bi-mouse',
+                      'bi bi-usb', 'bi bi-hdd', 'bi bi-camera', 'bi bi-tablet',
+                      'bi bi-headphones', 'bi bi-router', 'bi bi-bluetooth', 'bi bi-plug',
+                      'bi bi-motherboard', 'bi bi-sd-card', 'bi bi-speaker', 'bi bi-mic',
+                      'bi bi-display', 'bi bi-disc', 'bi bi-keyboard', 'bi bi-pc-display',
+                      'bi bi-pc', 'bi bi-tablet-landscape', 'bi bi-tablet', 'bi bi-watch',
+                      'bi bi-bag', 'bi bi-box', 'bi bi-box-seam', 'bi bi-archive',
+                      'bi bi-calendar', 'bi bi-calendar-check', 'bi bi-calendar-event',
+                      'bi bi-clipboard', 'bi bi-clipboard-check', 'bi bi-clipboard-data',
+                      'bi bi-clipboard-plus', 'bi bi-clipboard-x', 'bi bi-collection',
+                      'bi bi-columns', 'bi bi-diagram-3', 'bi bi-diagram-2', 'bi bi-diagram-2-fill'
+                    ];
+                    iconos.forEach(icono => { %>
+                      <div class="col-6 col-sm-4 col-md-3 col-lg-2 text-center">
+                        <button type="button"
+                          class="btn btn-outline-secondary w-100 p-3 icono-btn <%= (categoria.icono === icono || (!categoria.icono && icono === 'bi bi-tag')) ? 'active' : '' %>"
+                          data-icono="<%= icono %>">
+                          <i class="<%= icono %>" style="font-size: 1.5rem;"></i>
+                        </button>
+                      </div>
+                  <% }) %>
+                </div>
+              </div>
+            </div>
+
+            <!-- Vista previa -->
+            <div class="mb-4">
+              <label class="form-label fw-semibold">Vista previa</label>
+              <div class="p-4 bg-light rounded text-center">
+                <span class="badge bg-primary" 
+                      style="padding: 12px 24px; 
+                             font-size: 1rem;">
+                  <i id="iconoPreview" 
+                     class="<%= categoria.icono || 'bi bi-tag' %> me-2"></i>
+                  <span id="nombrePreview"><%= categoria.nombre || 'Nombre de categoría' %></span>
+                </span>
+              </div>
+            </div>
+
+            <!-- Botones -->
+            <div class="d-flex gap-2 justify-content-end">
+              <a href="/categorias" class="btn btn-secondary">
+                <i class="bi bi-x-circle me-1"></i> Cancelar
+              </a>
+              <button type="submit" class="btn btn-primary">
+                <i class="bi bi-check-circle me-1"></i> Guardar
+              </button>
+            </div>
+          </form>
+        </div>
+      </div>
     </div>
   </div>
-  <div class="mb-3">
-    <label>Icono</label>
-    <input type="hidden" name="icono" id="iconoInput" value="<%= categoria.icono || 'bi bi-tag' %>">
-    <div class="table-responsive">
-      <table class="table table-bordered" style="max-width: 800px;">
-        <tbody>
-          <%
-            const iconos = [
-              'bi bi-tag', 'bi bi-laptop', 'bi bi-phone', 'bi bi-printer',
-              'bi bi-tv', 'bi bi-cpu', 'bi bi-tools', 'bi bi-battery-charging',
-              'bi bi-lightning', 'bi bi-gear', 'bi bi-wrench', 'bi bi-mouse',
-              'bi bi-usb', 'bi bi-hdd', 'bi bi-camera', 'bi bi-tablet',
-              'bi bi-headphones', 'bi bi-router', 'bi bi-bluetooth', 'bi bi-plug',
-              'bi bi-motherboard', 'bi bi-sd-card', 'bi bi-speaker', 'bi bi-mic',
-              'bi bi-display', 'bi bi-disc', 'bi bi-keyboard', 'bi bi-pc-display',
-              'bi bi-pc', 'bi bi-tablet-landscape', 'bi bi-tablet', 'bi bi-watch',
-              'bi bi-bag', 'bi bi-box', 'bi bi-box-seam', 'bi bi-archive',
-              'bi bi-calendar', 'bi bi-calendar-check', 'bi bi-calendar-event',
-              'bi bi-clipboard', 'bi bi-clipboard-check', 'bi bi-clipboard-data',
-              'bi bi-clipboard-plus', 'bi bi-clipboard-x', 'bi bi-collection',
-              'bi bi-columns', 'bi bi-diagram-3', 'bi bi-diagram-2', 'bi bi-diagram-2-fill'
-            ];
-            for (let i = 0; i < iconos.length; i += 8) { %>
-              <tr>
-                <% for (let j = 0; j < 8; j++) {
-                  const idx = i + j;
-                  if (iconos[idx]) { %>
-                    <td class="text-center">
-                      <button type="button"
-                        class="btn btn-light icono-btn <%= (categoria.icono === iconos[idx] || (!categoria.icono && iconos[idx] === 'bi bi-tag')) ? 'border-primary border-3' : '' %>"
-                        data-icono="<%= iconos[idx] %>">
-                        <i class="<%= iconos[idx] %>" style="font-size:2rem"></i>
-                      </button>
-                    </td>
-                  <% } else { %>
-                    <td></td>
-                  <% } %>
-                <% } %>
-              </tr>
-          <% } %>
-        </tbody>
-      </table>
-    </div>
-    <div class="mt-2">
-      <span>Vista previa: </span>
-      <i id="iconoPreview" class="<%= categoria.icono || 'bi bi-tag' %>" style="font-size:2rem"></i>
-    </div>
-  </div>
-  <div class="text-center pb-3">
-    <button class="btn btn-primary"><i class="bi bi-save"></i> Guardar</button>
-    <a href="/categorias" class="btn btn-secondary">Cancelar</a>
-  </div>
-</form>
-<script>
-  document.querySelectorAll('.icono-btn').forEach(btn => {
-    btn.addEventListener('click', function() {
-      document.getElementById('iconoInput').value = this.getAttribute('data-icono');
-      document.getElementById('iconoPreview').className = this.getAttribute('data-icono');
-      document.querySelectorAll('.icono-btn').forEach(b => b.classList.remove('border-primary', 'border-3'));
-      this.classList.add('border-primary', 'border-3');
-    });
-  });
-</script>
+</div>
+
 <%- include('../partials/footer') %>
