@@ -1,0 +1,291 @@
+<%- include('../partials/header', { title }) %>
+
+<div class="container-fluid">
+  <!-- Header -->
+  <div class="d-flex justify-content-between align-items-center mb-4">
+    <h1><i class="bi bi-graph-up"></i> Análisis de Datos</h1>
+    <div class="d-flex gap-2">
+      <!-- Botones de período -->
+      <div class="btn-group" role="group">
+        <button type="button" class="btn btn-outline-secondary <%= periodo === 'mes' ? 'active' : '' %>" onclick="cambiarPeriodo('mes')">
+          <i class="bi bi-calendar-month"></i> Mes
+        </button>
+        <button type="button" class="btn btn-outline-secondary <%= periodo === 'trimestre' ? 'active' : '' %>" onclick="cambiarPeriodo('trimestre')">
+          <i class="bi bi-calendar3"></i> Trimestre
+        </button>
+        <button type="button" class="btn btn-outline-secondary <%= periodo === 'año' ? 'active' : '' %>" onclick="cambiarPeriodo('año')">
+          <i class="bi bi-calendar"></i> Año
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Resumen de KPIs -->
+  <div class="row g-3 mb-4">
+    <div class="col-md-3">
+      <div class="card border-0 shadow-sm">
+        <div class="card-body">
+          <div class="d-flex justify-content-between align-items-center">
+            <div>
+              <h6 class="text-muted mb-1">Ingresos Totales</h6>
+              <h3 class="mb-0 counter">$<%= ingresosTotales %></h3>
+              <small class="<%= porcentajeCrecimiento >= 0 ? 'text-success' : 'text-danger' %>">
+                <i class="bi bi-arrow-<%= porcentajeCrecimiento >= 0 ? 'up' : 'down' %>"></i>
+                <%= Math.abs(porcentajeCrecimiento) %>%
+              </small>
+            </div>
+            <div class="icon-wrapper bg-success bg-opacity-10 p-3 rounded">
+              <i class="bi bi-cash-stack text-success" style="font-size: 1.5rem;"></i>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-md-3">
+      <div class="card border-0 shadow-sm">
+        <div class="card-body">
+          <div class="d-flex justify-content-between align-items-center">
+            <div>
+              <h6 class="text-muted mb-1">Trabajos Completados</h6>
+              <h3 class="mb-0 counter"><%= trabajosCompletados %></h3>
+              <small class="text-muted">Este período</small>
+            </div>
+            <div class="icon-wrapper bg-primary bg-opacity-10 p-3 rounded">
+              <i class="bi bi-check-circle text-primary" style="font-size: 1.5rem;"></i>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-md-3">
+      <div class="card border-0 shadow-sm">
+        <div class="card-body">
+          <div class="d-flex justify-content-between align-items-center">
+            <div>
+              <h6 class="text-muted mb-1">Ticket Promedio</h6>
+              <h3 class="mb-0 counter">$<%= ticketPromedio %></h3>
+              <small class="text-muted">Por trabajo</small>
+            </div>
+            <div class="icon-wrapper bg-info bg-opacity-10 p-3 rounded">
+              <i class="bi bi-receipt text-info" style="font-size: 1.5rem;"></i>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-md-3">
+      <div class="card border-0 shadow-sm">
+        <div class="card-body">
+          <div class="d-flex justify-content-between align-items-center">
+            <div>
+              <h6 class="text-muted mb-1">Clientes Activos</h6>
+              <h3 class="mb-0 counter"><%= clientesActivos %></h3>
+              <small class="text-muted">Con trabajos recientes</small>
+            </div>
+            <div class="icon-wrapper bg-warning bg-opacity-10 p-3 rounded">
+              <i class="bi bi-people text-warning" style="font-size: 1.5rem;"></i>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Gráficos principales -->
+  <div class="row g-3 mb-4">
+    <!-- Ingresos por mes -->
+    <div class="col-md-8">
+      <div class="card shadow-sm">
+        <div class="card-header bg-white">
+          <h5 class="mb-0"><i class="bi bi-graph-up-arrow"></i> Evolución de Ingresos</h5>
+        </div>
+        <div class="card-body">
+          <canvas id="chartIngresos" height="100"></canvas>
+        </div>
+      </div>
+    </div>
+
+    <!-- Distribución por categoría -->
+    <div class="col-md-4">
+      <div class="card shadow-sm">
+        <div class="card-header bg-white">
+          <h5 class="mb-0"><i class="bi bi-pie-chart"></i> Por Categoría</h5>
+        </div>
+        <div class="card-body">
+          <canvas id="chartCategorias" height="200"></canvas>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Análisis detallado -->
+  <div class="row g-3 mb-4">
+    <!-- Top clientes -->
+    <div class="col-md-6">
+      <div class="card shadow-sm">
+        <div class="card-header bg-white d-flex justify-content-between align-items-center">
+          <h5 class="mb-0"><i class="bi bi-trophy"></i> Top Clientes</h5>
+          <small class="text-muted">Por ingresos generados</small>
+        </div>
+        <div class="card-body">
+          <% if (topClientes && topClientes.length > 0) { %>
+          <div class="table-responsive">
+            <table class="table table-sm">
+              <thead>
+                <tr>
+                  <th>Cliente</th>
+                  <th>Trabajos</th>
+                  <th>Total</th>
+                  <th>%</th>
+                </tr>
+              </thead>
+              <tbody>
+                <% topClientes.forEach((cliente, index) => { %>
+                <tr>
+                  <td>
+                    <div class="d-flex align-items-center">
+                      <span class="badge bg-<%= index === 0 ? 'warning' : index === 1 ? 'secondary' : index === 2 ? 'danger' : 'primary' %> me-2">
+                        <%= index + 1 %>
+                      </span>
+                      <%= cliente.nombre %>
+                    </div>
+                  </td>
+                  <td><%= cliente.cantidad_trabajos %></td>
+                  <td class="fw-bold">$<%= cliente.total_ingresos.toLocaleString() %></td>
+                  <td>
+                    <div class="progress" style="height: 20px;">
+                      <div class="progress-bar bg-gradient" style="width: <%= cliente.porcentaje %>%">
+                        <%= cliente.porcentaje %>%
+                      </div>
+                    </div>
+                  </td>
+                </tr>
+                <% }) %>
+              </tbody>
+            </table>
+          </div>
+          <% } else { %>
+          <p class="text-muted text-center">No hay datos de clientes disponibles</p>
+          <% } %>
+        </div>
+      </div>
+    </div>
+
+    <!-- Servicios más solicitados -->
+    <div class="col-md-6">
+      <div class="card shadow-sm">
+        <div class="card-header bg-white d-flex justify-content-between align-items-center">
+          <h5 class="mb-0"><i class="bi bi-star"></i> Servicios Más Solicitados</h5>
+          <small class="text-muted">Por frecuencia</small>
+        </div>
+        <div class="card-body">
+          <canvas id="chartServicios" height="150"></canvas>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Análisis geográfico y temporal -->
+  <div class="row g-3 mb-4">
+    <!-- Distribución por zona -->
+    <div class="col-md-6">
+      <div class="card shadow-sm">
+        <div class="card-header bg-white">
+          <h5 class="mb-0"><i class="bi bi-geo-alt"></i> Distribución por Zona</h5>
+        </div>
+        <div class="card-body">
+          <% if (zonasClientes && zonasClientes.length > 0) { %>
+          <% zonasClientes.forEach(zona => { %>
+          <div class="mb-3">
+            <div class="d-flex justify-content-between align-items-center mb-1">
+              <span class="text-truncate" style="max-width: 70%;">
+                <%= zona.direccion %>
+              </span>
+              <span class="badge bg-primary"><%= zona.cantidad %></span>
+            </div>
+            <div class="progress" style="height: 10px;">
+              <div class="progress-bar bg-gradient" style="width: <%= (zona.cantidad / zonasClientes[0].cantidad * 100) %>%">
+              </div>
+            </div>
+          </div>
+          <% }) %>
+          <% } else { %>
+          <p class="text-muted text-center">No hay datos de zonas disponibles</p>
+          <% } %>
+        </div>
+      </div>
+    </div>
+
+    <!-- Análisis temporal -->
+    <div class="col-md-6">
+      <div class="card shadow-sm">
+        <div class="card-header bg-white">
+          <h5 class="mb-0"><i class="bi bi-clock-history"></i> Patrones Temporales</h5>
+        </div>
+        <div class="card-body">
+          <canvas id="chartTemporal" height="150"></canvas>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Proyecciones y Tendencias -->
+  <div class="row g-3 mb-4">
+    <div class="col-12">
+      <div class="card shadow-sm">
+        <div class="card-header bg-white">
+          <h5 class="mb-0 text-primary">
+            <i class="bi bi-graph-up-arrow"></i> Proyecciones y Tendencias
+          </h5>
+        </div>
+        <div class="card-body">
+          <div class="row text-center">
+            <div class="col-md-4">
+              <div class="p-3">
+                <h6 class="text-muted">Proyección Mensual</h6>
+                <h2 class="text-primary fw-bold">$<%= proyeccionMensual.toLocaleString() %></h2>
+                <small class="text-muted">Basado en tendencia actual</small>
+              </div>
+            </div>
+            <div class="col-md-4">
+              <div class="p-3">
+                <h6 class="text-muted">Crecimiento Esperado</h6>
+                <h2 class="text-success fw-bold"><%= crecimientoEsperado %>%</h2>
+                <small class="text-muted">Próximos 3 meses</small>
+              </div>
+            </div>
+            <div class="col-md-4">
+              <div class="p-3">
+                <h6 class="text-muted">Categoría en Crecimiento</h6>
+                <h2 class="text-warning fw-bold"><%= categoriaEnCrecimiento %></h2>
+                <small class="text-muted">Mayor demanda</small>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<!-- Chart.js -->
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+
+<script>
+  window.analisisData = {
+    meses: <%- JSON.stringify(meses || []) %>,
+    ingresosPorMes: <%- JSON.stringify(ingresosPorMes || []) %>,
+    proyeccionIngresos: <%- JSON.stringify(proyeccionIngresos || []) %>,
+    categorias: <%- JSON.stringify(categorias || []) %>,
+    serviciosFrecuentes: <%- JSON.stringify(serviciosFrecuentes || []) %>,
+    trabajosPorDia: <%- JSON.stringify(trabajosPorDia || []) %>
+  };
+</script>
+
+<script src="/js/GraficarAnalisis.js"></script>
+
+<%- include('../partials/footer') %>

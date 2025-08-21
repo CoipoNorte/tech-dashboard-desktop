@@ -126,7 +126,7 @@ app.use('/estados', require('./routes/estados'));
 app.use('/usuarios', require('./routes/usuarios'));
 app.use('/urgencias', require('./routes/urgencias'));
 app.use('/herramientas', require('./routes/herramientas'));
-
+app.use('/analisis', require('./routes/analisis')); 
 app.use('/api', require('./routes/api'));
 
 // 404

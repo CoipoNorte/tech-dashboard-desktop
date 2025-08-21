@@ -1,10 +1,60 @@
+/* =============================================
+   1. VARIABLES Y CONFIGURACIÓN BASE
+   ============================================= */
+:root {
+  --primary-color: #0dcaf0;
+  --primary-hover: #0d6efd;
+  --shadow-light: 0 2px 8px rgba(0, 0, 0, 0.07);
+  --shadow-medium: 0 8px 32px rgba(13, 110, 253, 0.18), 0 2px 8px rgba(0, 0, 0, 0.10);
+  --shadow-hover: 0 0.5rem 1rem rgba(0, 0, 0, 0.15);
+  --transition-base: all 0.3s ease;
+  --transition-fast: all 0.2s ease;
+}
+
+/* =============================================
+   2. ESTILOS GLOBALES
+   ============================================= */
 body {
   background: linear-gradient(135deg, #f8fafc 0%, #e0e7ef 100%);
   min-height: 100vh;
 }
 
-.table img {
-  border-radius: 4px;
+/* =============================================
+   3. COMPONENTES REUTILIZABLES
+   ============================================= */
+
+/* Transiciones y efectos hover base */
+.btn,
+.card,
+.trabajo-item,
+.quick-access-card,
+.stat-card,
+.enlace-efecto {
+  transition: var(--transition-base);
+  cursor: pointer;
+}
+
+/* Efecto hover estándar */
+.btn:hover,
+.card-dashboard-hover:hover,
+.enlace-efecto:hover {
+  box-shadow: var(--shadow-medium);
+  transform: translateY(-4px) scale(1.03);
+}
+
+/* Efecto hover para iconos */
+.btn:hover i,
+.card-dashboard-hover:hover i,
+.enlace-efecto:hover i {
+  transform: scale(1.15);
+  transition: transform 0.2s;
+}
+
+/* =============================================
+   4. NAVBAR Y NAVEGACIÓN
+   ============================================= */
+.navbar {
+  box-shadow: var(--shadow-light);
 }
 
 .navbar-brand {
@@ -18,65 +68,104 @@ body {
 .navbar-brand i {
   font-size: 1.7rem;
   margin-right: 8px;
-  color: #0dcaf0;
+  color: var(--primary-color);
 }
 
 .navbar-nav .nav-link.active,
 .navbar-nav .nav-link:hover {
-  color: #0dcaf0 !important;
+  color: var(--primary-color) !important;
 }
 
-.navbar {
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.07);
+/* =============================================
+   5. CARDS Y CONTENEDORES
+   ============================================= */
+.card {
+  transition: transform 0.2s;
 }
 
-/* dashboard efecto */
+.card:hover {
+  transform: translateY(-2px);
+}
+
+/* Dashboard cards específicas */
 .card-dashboard-hover {
   transition: box-shadow 0.2s, transform 0.2s, background 0.2s;
-  cursor: pointer;
 }
 
 .card-dashboard-hover:hover {
-  box-shadow: 0 8px 32px rgba(13, 110, 253, 0.18), 0 2px 8px rgba(0, 0, 0, 0.10);
+  box-shadow: var(--shadow-medium);
   transform: translateY(-4px) scale(1.05);
 }
 
 .card-dashboard-hover:hover i {
   transform: scale(1.6);
-  /* antes era 1.15 */
   transition: transform 0.3s;
 }
 
-/* TOOOL TIP */
-#customTooltip {
-  position: absolute;
-  z-index: 9999;
-  background: #fff;
-  border: 1px solid #ccc;
-  border-radius: 6px;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
-  padding: 8px;
-  max-width: 300px;
-  /* límite superior */
-  min-width: 120px;
-  /* límite inferior */
-  width: auto;
-  /* que se adapte */
-  white-space: normal;
-  /* permite saltos de línea */
-  word-wrap: break-word;
-  transition: opacity 0.2s ease;
+/* Cards de estadísticas */
+.stat-card:hover {
+  transform: translateY(-3px);
+  box-shadow: var(--shadow-hover) !important;
 }
 
-.text-area-wrapper {
-  transition: all 0.3s ease;
+.stat-icon {
+  width: 60px;
+  height: 60px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
-/*copy efecto*/
+/* =============================================
+   6. BOTONES Y ENLACES
+   ============================================= */
+
+/* Botón con efecto bounce */
+.btnjump {
+  transition: background 0.3s;
+  cursor: pointer;
+}
+
+.btnjump:hover {
+  animation: bounce 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+
+.btnjump:hover i {
+  animation: bounce-icon 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+
+/* Botón con salto infinito */
+.btnjump-e:hover {
+  display: inline-block;
+  cursor: pointer;
+  animation: bounce 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94) infinite
+  ;
+}
+
+/* Enlaces con lupa */
+.enlace-lupa {
+  transition: color 0.2s, background 0.2s;
+}
+
+.enlace-lupa i {
+  color: var(--primary-hover);
+  margin-right: 2px;
+}
+
+a.text-dark.text-decoration-none:hover,
+.enlace-lupa:hover {
+  color: var(--primary-hover) !important;
+  background: #f0f8ff;
+  border-radius: 4px;
+  text-decoration: none;
+  transition: var(--transition-fast);
+}
+
+/* Botón de copiar */
 .copy-btn {
   padding: 0.25rem 0.5rem;
   border: 1px solid #dee2e6;
-  transition: all 0.2s;
+  transition: var(--transition-fast);
 }
 
 .copy-btn:hover {
@@ -88,139 +177,21 @@ body {
   font-size: 0.875rem;
 }
 
-/* BOTON EFECTO HOVER */
-.btn {
-  transition: box-shadow 0.2s, transform 0.2s, background 0.2s;
-  cursor: pointer;
-}
-
-.btn:hover {
-  box-shadow: 0 8px 32px rgba(13, 110, 253, 0.18), 0 2px 8px rgba(0, 0, 0, 0.10);
-  transform: translateY(-4px) scale(1.03);
-}
-
-.btn:hover i {
-  transform: scale(1.15);
-  transition: transform 0.2s;
-}
-
-/* BOTÓN EFECTO HOVER CON SALTO SUAVE */
-.btnjump {
-  transition: background 0.3s;
-  cursor: pointer;
-}
-
-.btnjump:hover {
-  animation: bounce 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-  /*box-shadow: 0 8px 32px rgba(13, 110, 253, 0.18), 0 2px 8px rgba(0, 0, 0, 0.10);*/
-}
-
-.btnjump:hover i {
-  animation: bounce-icon 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-}
-
-/* Animación del botón */
-@keyframes bounce {
-  0% {
-    transform: translateY(0) scale(1);
-  }
-
-  25% {
-    transform: translateY(-5px) scale(1.04);
-  }
-
-  50% {
-    transform: translateY(3px) scale(0.98);
-  }
-
-  75% {
-    transform: translateY(-2px) scale(1.02);
-  }
-
-  100% {
-    transform: translateY(0) scale(1);
-  }
-}
-
-/* Animación del ícono */
-@keyframes bounce-icon {
-  0% {
-    transform: scale(1);
-  }
-
-  25% {
-    transform: scale(1.15);
-  }
-
-  50% {
-    transform: scale(0.97);
-  }
-
-  75% {
-    transform: scale(1.05);
-  }
-
-  100% {
-    transform: scale(1);
-  }
-}
-
-
-/* ENLACE EFECTO HOVER */
-.enlace-efecto {
-  display: inline-block;
-  padding: 8px 16px;
-  border-radius: 6px;
-  text-decoration: none;
-  transition: box-shadow 0.2s, transform 0.2s, background 0.2s;
-  cursor: pointer;
-  color: #0d6efd;
-  /* azul Bootstrap */
-}
-
-.enlace-efecto:hover {
-  box-shadow: 0 8px 32px rgba(13, 110, 253, 0.18), 0 2px 8px rgba(0, 0, 0, 0.10);
-  transform: translateY(-4px) scale(1.03);
-}
-
-.enlace-efecto:hover i {
-  transform: scale(1.15);
-  transition: transform 0.2s;
-}
-
-/* Enlaces bonitos */
-a.text-dark.text-decoration-none:hover,
-.enlace-lupa:hover {
-  color: #0d6efd !important;
-  background: #f0f8ff;
-  border-radius: 4px;
-  text-decoration: none;
-  transition: all 0.2s;
-}
-
-.enlace-lupa {
-  transition: color 0.2s, background 0.2s;
-}
-
-.enlace-lupa i {
-  color: #0d6efd;
-  margin-right: 2px;
-}
-
-/*CALENDARIO*/
+/* =============================================
+   7. CALENDARIO
+   ============================================= */
 .calendario-table {
   table-layout: fixed;
 }
 
 .calendario-dia {
   cursor: pointer;
-  transition: all 0.3s ease;
+  transition: var(--transition-base);
   position: relative;
   overflow: hidden;
   min-height: 120px;
 }
 
-/* Efecto hover mejorado */
 .calendario-dia:hover:not(.otro-mes) {
   background-color: #f0f7ff;
   transform: translateY(-2px);
@@ -228,14 +199,9 @@ a.text-dark.text-decoration-none:hover,
 }
 
 .calendario-dia:hover .dia-numero {
-  color: #0d6efd;
+  color: var(--primary-hover);
   transform: scale(1.1);
-  transition: all 0.3s ease;
-}
-
-.calendario-dia:hover .badge-contador {
-  transform: scale(1.1);
-  transition: all 0.3s ease;
+  transition: var(--transition-base);
 }
 
 .calendario-dia.otro-mes {
@@ -258,14 +224,14 @@ a.text-dark.text-decoration-none:hover,
   background: linear-gradient(90deg, #2196F3 0%, #1976D2 100%);
 }
 
-/* Botón de agregar trabajo en el día */
+/* Botón agregar trabajo */
 .dia-numero-wrapper {
   position: relative;
   display: inline-block;
 }
 
 .dia-numero {
-  transition: all 0.3s ease;
+  transition: var(--transition-base);
   cursor: pointer;
   display: inline-block;
   padding: 4px 8px;
@@ -288,7 +254,7 @@ a.text-dark.text-decoration-none:hover,
   border-radius: 50%;
   opacity: 0;
   transform: scale(0.8);
-  transition: all 0.3s ease;
+  transition: var(--transition-base);
   cursor: pointer;
   text-decoration: none;
   font-size: 1.2rem;
@@ -298,82 +264,45 @@ a.text-dark.text-decoration-none:hover,
 .dia-numero-wrapper:hover .btn-add-trabajo {
   opacity: 1;
   transform: scale(1);
+  animation: pulse 1.5s infinite;
 }
 
 .dia-numero-wrapper:hover .dia-numero {
   opacity: 0;
 }
 
-/* No mostrar en días de otros meses */
 .otro-mes .btn-add-trabajo {
   display: none;
 }
 
-/* Ajuste para día actual */
 .dia-hoy .btn-add-trabajo {
   background-color: #17a2b8;
 }
 
-/* Animación de pulso para el botón */
-@keyframes pulse {
-  0% {
-    box-shadow: 0 0 0 0 rgba(40, 167, 69, 0.7);
-  }
-  70% {
-    box-shadow: 0 0 0 10px rgba(40, 167, 69, 0);
-  }
-  100% {
-    box-shadow: 0 0 0 0 rgba(40, 167, 69, 0);
-  }
-}
-
-.dia-numero-wrapper:hover .btn-add-trabajo {
-  animation: pulse 1.5s infinite;
-}
-
-/* Efecto especial para días sin trabajos */
-.calendario-dia:not(.otro-mes) .trabajos-dia:empty {
-  min-height: 30px;
-  border: 2px dashed transparent;
-  transition: all 0.3s ease;
-}
-
-.calendario-dia:not(.otro-mes):hover .trabajos-dia:empty {
-  border-color: #28a745;
-  background-color: rgba(40, 167, 69, 0.05);
-}
-
-/*--- --- --- --- --- --- --- --- --- --- ---*/
-
-/* Efectos para trabajos */
+/* Trabajos en calendario */
 .trabajo-item {
-  transition: all 0.3s ease;
+  transition: var(--transition-base);
   cursor: move;
   margin-bottom: 4px;
+  animation: fadeIn 0.3s ease;
 }
 
 .trabajo-item:hover {
   transform: translateX(5px);
 }
 
-.trabajo-card {
-  transition: all 0.3s ease;
-}
-
-.trabajo-card:hover {
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
-  transform: scale(1.02);
-}
-
-/* Drag and drop */
 .trabajo-item.dragging {
   opacity: 0.5;
   cursor: grabbing;
 }
 
-.calendario-dia.drag-over {
-  background-color: #e8f5e9 !important;
-  border: 2px dashed #4caf50;
+.trabajo-card {
+  transition: var(--transition-base);
+}
+
+.trabajo-card:hover {
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+  transform: scale(1.02);
 }
 
 .trabajos-dia {
@@ -381,111 +310,42 @@ a.text-dark.text-decoration-none:hover,
   padding: 4px;
 }
 
-/* Animaciones */
-@keyframes fadeIn {
-  from {
-    opacity: 0;
-    transform: translateY(10px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-.trabajo-item {
-  animation: fadeIn 0.3s ease;
-}
-
-/* Responsive */
-@media (max-width: 768px) {
-  .calendario-table {
-    font-size: 0.8rem;
-  }
-  
-  .calendario-dia {
-    min-height: 100px !important;
-  }
-  
-  .trabajo-card {
-    font-size: 0.7rem !important;
-    padding: 0.25rem !important;
-  }
-  
-  .trabajo-item i {
-    display: none;
-  }
-}
-
-/* Efectos para trabajos */
-.trabajo-item {
-  transition: all 0.3s ease;
-  cursor: move;
-}
-
-.trabajo-item:hover {
-  transform: translateX(5px);
-}
-
-.trabajo-card:hover {
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
-  transform: scale(1.02);
-}
-
-/* Drag and drop */
-.trabajo-item.dragging {
-  opacity: 0.5;
-  cursor: grabbing;
-}
-
 .calendario-dia.drag-over {
   background-color: #e8f5e9 !important;
   border: 2px dashed #4caf50;
 }
 
-/* Animaciones */
-@keyframes fadeIn {
-  from {
-    opacity: 0;
-    transform: translateY(10px);
-  }
+/* =============================================
+   8. COMPONENTES ESPECÍFICOS
+   ============================================= */
 
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
+/* Tooltip personalizado */
+#customTooltip {
+  position: absolute;
+  z-index: 9999;
+  background: #fff;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+  padding: 8px;
+  max-width: 300px;
+  min-width: 120px;
+  width: auto;
+  white-space: normal;
+  word-wrap: break-word;
+  transition: opacity 0.2s ease;
 }
 
-.trabajo-item {
-  animation: fadeIn 0.3s ease;
+/* Área de texto */
+.text-area-wrapper {
+  transition: var(--transition-base);
 }
 
-/* Vista semana */
-.vista-semana .calendario-dia {
-  min-height: 200px;
+/* Tablas */
+.table img {
+  border-radius: 4px;
 }
 
-/* Responsive */
-@media (max-width: 768px) {
-  .calendario-table {
-    font-size: 0.8rem;
-  }
-
-  .calendario-dia {
-    height: 100px !important;
-  }
-
-  .trabajo-card {
-    font-size: 0.7rem !important;
-    padding: 0.25rem !important;
-  }
-
-  .trabajo-item i {
-    display: none;
-  }
-}
-
-/* Tablas responsivas */
 .table-responsive {
   margin-bottom: 1rem;
 }
@@ -499,10 +359,170 @@ a.text-dark.text-decoration-none:hover,
   border-radius: 4px;
 }
 
-/* Botones responsivos en filas */
-.d-grid.gap-2>.btn,
-.d-grid.gap-2>.btn+.btn {
-  margin-bottom: 0.5rem;
+/* =============================================
+   9. ANÁLISIS Y GRÁFICOS
+   ============================================= */
+.icon-wrapper {
+  width: 50px;
+  height: 50px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 10px;
+}
+
+.progress {
+  background-color: #e9ecef;
+}
+
+.progress-bar {
+  transition: width 1s ease-in-out;
+}
+
+.text-white-50 {
+  color: rgba(255, 255, 255, 0.7) !important;
+}
+
+.counter {
+  font-variant-numeric: tabular-nums;
+}
+
+/* =============================================
+   10. CARRUSEL
+   ============================================= */
+.quick-access-card:hover {
+  transform: translateY(-5px);
+  box-shadow: var(--shadow-hover) !important;
+}
+
+.carousel-control-prev,
+.carousel-control-next {
+  width: 5%;
+}
+
+.carousel-control-prev-icon,
+.carousel-control-next-icon {
+  width: 2rem;
+  height: 2rem;
+}
+
+/* =============================================
+   11. ANIMACIONES
+   ============================================= */
+@keyframes bounce {
+  0% {
+    transform: translateY(0) scale(1);
+  }
+
+  25% {
+    transform: translateY(-5px) scale(1.04);
+  }
+
+  50% {
+    transform: translateY(3px) scale(0.98);
+  }
+
+  75% {
+    transform: translateY(-2px) scale(1.02);
+  }
+
+  100% {
+    transform: translateY(0) scale(1);
+  }
+}
+
+@keyframes bounce-icon {
+  0% {
+    transform: scale(1);
+  }
+
+  25% {
+    transform: scale(1.15);
+  }
+
+  50% {
+    transform: scale(0.97);
+  }
+
+  75% {
+    transform: scale(1.05);
+  }
+
+  100% {
+    transform: scale(1);
+  }
+}
+
+@keyframes pulse {
+  0% {
+    box-shadow: 0 0 0 0 rgba(40, 167, 69, 0.7);
+  }
+
+  70% {
+    box-shadow: 0 0 0 10px rgba(40, 167, 69, 0);
+  }
+
+  100% {
+    box-shadow: 0 0 0 0 rgba(40, 167, 69, 0);
+  }
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* =============================================
+   12. RESPONSIVE
+   ============================================= */
+@media (max-width: 768px) {
+
+  /* Calendario responsive */
+  .calendario-table {
+    font-size: 0.8rem;
+  }
+
+  .calendario-dia {
+    min-height: 100px !important;
+  }
+
+  .trabajo-card {
+    font-size: 0.7rem !important;
+    padding: 0.25rem !important;
+  }
+
+  .trabajo-item i {
+    display: none;
+  }
+
+  /* Carrusel responsive */
+  .carousel-control-prev,
+  .carousel-control-next {
+    display: none;
+  }
+
+  /* Botones responsive */
+  .btn-group {
+    display: flex;
+    width: 100%;
+  }
+
+  .btn-group .btn {
+    flex: 1;
+  }
+
+  /* Grid responsive */
+  .d-grid.gap-2>.btn,
+  .d-grid.gap-2>.btn+.btn {
+    margin-bottom: 0.5rem;
+  }
 }
 
 @media (min-width: 768px) {

@@ -73,20 +73,20 @@
                     </span>
                   </td>
                   <td class="text-end pe-4">
-                    <div class="btn-group" role="group">
+                    
                       <a href="/urgencias/<%= urg.id %>/editar" 
-                         class="btn btn-sm btn-outline-primary" 
+                         class="btn btn-sm btn-primary me-1" 
                          title="Editar">
                         <i class="bi bi-pencil"></i>
                       </a>
                       <form action="/urgencias/<%= urg.id %>/eliminar" method="post" style="display:inline;">
-                        <button class="btn btn-sm btn-outline-danger" 
+                        <button class="btn btn-sm btn-danger" 
                                 onclick="return confirm('¿Estás seguro de eliminar esta urgencia?')" 
                                 title="Eliminar">
                           <i class="bi bi-trash"></i>
                         </button>
                       </form>
-                    </div>
+                    
                   </td>
                 </tr>
               <% }) %>
