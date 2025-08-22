@@ -177,5 +177,14 @@ document.addEventListener('DOMContentLoaded', function () {
 
 // Función para cambiar período
 function cambiarPeriodo(periodo) {
+  // Reproducir sonido si está disponible
+  if (window.sonidos && window.sonidos.click) {
+    window.sonidos.click.currentTime = 0;
+    window.sonidos.click.play().catch(() => {});
+  }
+  
+  // Pequeño delay para que se escuche el sonido
+  setTimeout(() => {
     window.location.href = '/analisis?periodo=' + periodo;
+  }, 150);
 }

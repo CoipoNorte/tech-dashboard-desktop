@@ -71,11 +71,6 @@ body {
   color: var(--primary-color);
 }
 
-.navbar-nav .nav-link.active,
-.navbar-nav .nav-link:hover {
-  color: var(--primary-color) !important;
-}
-
 /* =============================================
    5. CARDS Y CONTENEDORES
    ============================================= */
@@ -135,11 +130,34 @@ body {
 }
 
 /* Botón con salto infinito */
-.btnjump-e:hover {
+/* 1. Display y cursor siempre visibles */
+.btnjump-e {
   display: inline-block;
   cursor: pointer;
-  animation: bounce 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94) infinite
-  ;
+}
+
+/* 2. Animación de rebote al hacer hover en el botón */
+.btnjump-e:hover {
+  animation: bounce 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94) infinite;
+}
+
+/* 3. Animación de “latido” (beat) sobre la imagen cuando el botón está en hover */
+.btnjump-e:hover img {
+  transform-origin: center center;
+  animation: beat 0.8s ease-in-out infinite;
+}
+
+/* Keyframes para el latido */
+@keyframes beat {
+
+  0%,
+  100% {
+    transform: scale(1);
+  }
+
+  50% {
+    transform: scale(1.1);
+  }
 }
 
 /* Enlaces con lupa */
@@ -530,5 +548,203 @@ a.text-dark.text-decoration-none:hover,
   .d-grid.gap-2>.btn,
   .d-grid.gap-2>.btn+.btn {
     margin-bottom: 0;
+  }
+}
+
+/* =============================================
+   13. IMPRESIÓN
+   ============================================= */
+
+/* Estilos para impresión y vista previa */
+@media print {
+  .no-print {
+    display: none !important;
+  }
+
+  .page {
+    page-break-after: always;
+    margin: 0;
+    padding: 15mm;
+  }
+
+  .page:last-child {
+    page-break-after: auto;
+  }
+}
+
+/* Simulación de páginas A4 */
+.page {
+  background: white;
+  width: 210mm;
+  min-height: 297mm;
+  padding: 25mm;
+  margin: 20px auto;
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+  position: relative;
+  display: flex;
+  flex-direction: column;
+}
+
+.page-content {
+  flex: 1;
+}
+
+.page-footer {
+  text-align: center;
+  color: #6c757d;
+  font-size: 0.9rem;
+  padding-top: 20px;
+  margin-top: auto;
+}
+
+/* Panel de control */
+.controls-panel {
+  position: fixed;
+  right: 20px;
+  top: 100px;
+  background: white;
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
+  z-index: 100;
+}
+
+/* Estilos del documento */
+.document-header {
+  text-align: center;
+  border-bottom: 3px solid #0d6efd;
+  padding-bottom: 20px;
+  margin-bottom: 30px;
+}
+
+.kpi-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 15px;
+  margin-bottom: 30px;
+}
+
+.kpi-box {
+  background: #f8f9fa;
+  border-radius: 8px;
+  padding: 20px;
+  text-align: center;
+}
+
+.kpi-value {
+  font-size: 1.8rem;
+  font-weight: bold;
+  color: #0d6efd;
+  margin: 5px 0;
+}
+
+.chart-container {
+  height: 250px !important;
+  margin-bottom: 30px;
+  page-break-inside: avoid;
+}
+
+.section-title {
+  color: #495057;
+  margin-bottom: 20px;
+  page-break-after: avoid;
+}
+
+table {
+  page-break-inside: avoid;
+}
+
+@media (max-width: 1200px) {
+  .controls-panel {
+    position: static;
+    margin-bottom: 20px;
+    width: 100%;
+    max-width: 100%;
+  }
+
+  .page {
+    width: 100%;
+    min-height: auto;
+    padding: 20px;
+  }
+}
+
+@media screen {
+  body {
+    background-color: #e9ecef;
+  }
+}
+
+/* =============================================
+   14. IMPRESIÓN DE DOCUMENTOS
+   ============================================= */
+/* Estilos críticos para impresión - DEBEN estar en la vista */
+@media print {
+
+  /* Ocultar elementos del layout principal */
+  .navbar,
+  .classic-navbar,
+  .modern-sidebar,
+  .modern-header,
+  .sidebar-backdrop,
+  .layout-toggle,
+  .no-print,
+  .controls-panel {
+    display: none !important;
+  }
+
+  /* Resetear el contenedor principal */
+  body {
+    margin: 0 !important;
+    padding: 0 !important;
+    background: white !important;
+  }
+
+  .main-content {
+    margin: 0 !important;
+    padding: 0 !important;
+    width: 100% !important;
+  }
+
+  .container-fluid {
+    padding: 0 !important;
+    margin: 0 !important;
+  }
+
+  /* Ajustar las páginas para impresión */
+  .document-wrapper {
+    margin: 0 !important;
+    padding: 0 !important;
+  }
+
+  .page {
+    margin: 0 !important;
+    padding: 15mm !important;
+    box-shadow: none !important;
+    page-break-after: always;
+    width: 100% !important;
+    max-width: 100% !important;
+  }
+
+  .page:last-child {
+    page-break-after: auto;
+  }
+}
+
+/* Estilos para vista en pantalla */
+@media screen {
+  .document-wrapper {
+    padding: 20px 0;
+    background-color: #e9ecef;
+  }
+
+  .page {
+    background: white;
+    width: 210mm;
+    min-height: 297mm;
+    padding: 25mm;
+    margin: 20px auto;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+    position: relative;
   }
 }

@@ -1,0 +1,216 @@
+<%- include('../partials/header', { title: 'Documento de Análisis' }) %>
+
+<!-- Panel de control -->
+<div class="controls-panel no-print">
+  <h5 class="mb-3"><i class="bi bi-file-text"></i> Vista Previa</h5>
+  
+  <div class="mb-3">
+    <label class="form-label">Período:</label>
+    <select class="form-select form-select-sm" onchange="cambiarPeriodo(this.value)">
+      <option value="mes" <%= periodo === 'mes' ? 'selected' : '' %>>Mes actual</option>
+      <option value="trimestre" <%= periodo === 'trimestre' ? 'selected' : '' %>>Trimestre</option>
+      <option value="año" <%= periodo === 'año' ? 'selected' : '' %>>Año completo</option>
+    </select>
+  </div>
+  
+  <div class="d-grid gap-2">
+    <button class="btn btn-primary" onclick="window.print()">
+      <i class="bi bi-printer"></i> Imprimir
+    </button>
+    <a href="/analisis" class="btn btn-secondary btn-sm">
+      <i class="bi bi-arrow-left"></i> Volver
+    </a>
+  </div>
+  
+  <hr>
+  
+  <div class="small text-muted">
+    <p class="mb-1"><i class="bi bi-info-circle"></i> Consejos:</p>
+    <ul class="ps-3 mb-0">
+      <li>Usa Ctrl+P para imprimir</li>
+      <li>Selecciona "Guardar como PDF" en el diálogo de impresión</li>
+    </ul>
+  </div>
+</div>
+
+<!-- Documento con páginas -->
+<div class="document-wrapper">
+  <!-- Página 1: Portada y Resumen -->
+  <div class="page">
+    <div class="page-content">
+      <div class="document-header">
+        <img src="/icon/icon.ico" alt="Logo" style="height: 80px;" class="mb-4">
+        <h1 class="mb-3">Informe de Análisis de Datos</h1>
+        <h3 class="text-muted mb-3">Tech Dashboard</h3>
+        <div class="mt-4">
+          <p class="mb-1"><strong>Período:</strong> <%= periodo.charAt(0).toUpperCase() + periodo.slice(1) %></p>
+          <p class="mb-0"><strong>Fecha de generación:</strong> <%= fechaGeneracion %></p>
+        </div>
+      </div>
+
+      <div class="mt-5">
+        <h2 class="section-title"><i class="bi bi-speedometer2"></i> Resumen Ejecutivo</h2>
+        <div class="kpi-grid">
+          <div class="kpi-box">
+            <div class="text-muted small">Ingresos Totales</div>
+            <div class="kpi-value">$<%= ingresosTotales.toLocaleString() %></div>
+            <small class="<%= porcentajeCrecimiento >= 0 ? 'text-success' : 'text-danger' %>">
+              <i class="bi bi-arrow-<%= porcentajeCrecimiento >= 0 ? 'up' : 'down' %>"></i>
+              <%= Math.abs(porcentajeCrecimiento) %>% vs período anterior
+            </small>
+          </div>
+          
+          <div class="kpi-box">
+            <div class="text-muted small">Trabajos Completados</div>
+            <div class="kpi-value"><%= trabajosCompletados %></div>
+            <small class="text-muted">En este período</small>
+          </div>
+          
+          <div class="kpi-box">
+            <div class="text-muted small">Ticket Promedio</div>
+            <div class="kpi-value">$<%= ticketPromedio.toLocaleString() %></div>
+            <small class="text-muted">Por trabajo</small>
+          </div>
+          
+          <div class="kpi-box">
+            <div class="text-muted small">Clientes Activos</div>
+            <div class="kpi-value"><%= clientesActivos %></div>
+            <small class="text-muted">Con trabajos recientes</small>
+          </div>
+        </div>
+
+        <div class="mt-5">
+          <h3 class="section-title">Proyecciones</h3>
+          <div class="row text-center">
+            <div class="col-4">
+              <div class="kpi-box">
+                <div class="text-muted small">Proyección Mensual</div>
+                <div class="kpi-value text-success" style="font-size: 1.5rem;">$<%= proyeccionMensual.toLocaleString() %></div>
+              </div>
+            </div>
+            <div class="col-4">
+              <div class="kpi-box">
+                <div class="text-muted small">Crecimiento Esperado</div>
+                <div class="kpi-value text-info" style="font-size: 1.5rem;"><%= crecimientoEsperado %>%</div>
+              </div>
+            </div>
+            <div class="col-4">
+              <div class="kpi-box">
+                <div class="text-muted small">Categoría Top</div>
+                <div class="kpi-value text-warning" style="font-size: 1.2rem;"><%= categoriaEnCrecimiento %></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Página 2: Gráficos -->
+  <div class="page">
+    <div class="page-content">
+      <h2 class="section-title"><i class="bi bi-graph-up"></i> Análisis Gráfico</h2>
+      
+      <div class="mb-4">
+        <h4>Evolución de Ingresos</h4>
+        <div class="chart-container">
+          <canvas id="chartIngresos"></canvas>
+        </div>
+      </div>
+      
+      <div class="row">
+        <div class="col-6">
+          <h4>Distribución por Categoría</h4>
+          <div class="chart-container">
+            <canvas id="chartCategorias"></canvas>
+          </div>
+        </div>
+        <div class="col-6">
+          <h4>Patrones Temporales</h4>
+          <div class="chart-container">
+            <canvas id="chartTemporal"></canvas>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Página 3: Tablas de datos -->
+  <% if (topClientes && topClientes.length > 0) { %>
+  <div class="page">
+    <div class="page-content">
+      <h2 class="section-title"><i class="bi bi-table"></i> Datos Detallados</h2>
+      
+      <h3>Top 10 Clientes por Ingresos</h3>
+      <div class="table-responsive">
+        <table class="table table-striped">
+          <thead>
+            <tr>
+              <th width="10%">Posición</th>
+              <th width="40%">Cliente</th>
+              <th width="20%">Trabajos</th>
+              <th width="20%">Total</th>
+              <th width="10%">%</th>
+            </tr>
+          </thead>
+          <tbody>
+            <% topClientes.slice(0, 10).forEach((cliente, index) => { %>
+            <tr>
+              <td>
+                <span class="badge bg-<%= index === 0 ? 'warning' : index === 1 ? 'secondary' : index === 2 ? 'danger' : 'primary' %>">
+                  #<%= index + 1 %>
+                </span>
+              </td>
+              <td><%= cliente.nombre %></td>
+              <td class="text-center"><%= cliente.cantidad_trabajos %></td>
+              <td class="text-end fw-bold">$<%= cliente.total_ingresos.toLocaleString() %></td>
+              <td class="text-center"><%= cliente.porcentaje %>%</td>
+            </tr>
+            <% }) %>
+          </tbody>
+        </table>
+      </div>
+
+      <% if (serviciosFrecuentes && serviciosFrecuentes.length > 0) { %>
+      <div class="mt-5">
+        <h3>Servicios Más Solicitados</h3>
+        <div class="table-responsive">
+          <table class="table table-striped">
+            <thead>
+              <tr>
+                <th width="10%">#</th>
+                <th width="70%">Descripción del Servicio</th>
+                <th width="20%">Cantidad</th>
+              </tr>
+            </thead>
+            <tbody>
+              <% serviciosFrecuentes.slice(0, 10).forEach((servicio, index) => { %>
+              <tr>
+                <td><%= index + 1 %></td>
+                <td><%= servicio.descripcion %></td>
+                <td class="text-center fw-bold"><%= servicio.cantidad %></td>
+              </tr>
+              <% }) %>
+            </tbody>
+          </table>
+        </div>
+      </div>
+      <% } %>
+    </div>
+  </div>
+  <% } %>
+</div>
+
+<!-- Scripts -->
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+<script>
+  window.datosGraficos = {
+    meses: <%- JSON.stringify(meses || []) %>,
+    ingresosPorMes: <%- JSON.stringify(ingresosPorMes || []) %>,
+    categorias: <%- JSON.stringify(categorias || []) %>,
+    trabajosPorDia: <%- JSON.stringify(trabajosPorDia || []) %>
+  };
+</script>
+<script src="/js/ImprimirAnalisis.js"></script>
+
+<%- include('../partials/footer') %>

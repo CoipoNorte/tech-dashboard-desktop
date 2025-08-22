@@ -543,4 +543,71 @@ exports.getProyecciones = async (req, res) => {
   }
 };
 
+// Nueva ruta para generar el documento PDF
+exports.documento = async (req, res) => {
+  try {
+    const periodo = req.query.periodo || 'mes';
+    const fechaInicio = getFechaInicio(periodo);
+    const fechaFin = moment().format('YYYY-MM-DD');
+
+    // Obtener todos los datos necesarios (igual que en dashboard)
+    const [
+      ingresosTotales,
+      trabajosCompletados,
+      ticketPromedio,
+      clientesActivos,
+      ingresosPorMes,
+      categorias,
+      topClientes,
+      serviciosFrecuentes,
+      zonasClientes,
+      trabajosPorDia,
+      proyecciones,
+      estadosInfo
+    ] = await Promise.all([
+      getIngresosTotales(fechaInicio, fechaFin),
+      getTrabajosCompletados(fechaInicio, fechaFin),
+      getTicketPromedio(fechaInicio, fechaFin),
+      getClientesActivos(fechaInicio, fechaFin),
+      getIngresosPorMes(),
+      getCategoriaStats(),
+      getTopClientes(),
+      getServiciosFrecuentes(),
+      getZonasClientes(),
+      getTrabajosPorDia(),
+      getProyecciones(),
+      getEstadosInfo()
+    ]);
+
+    res.render('analisis/documento', {
+      title: 'Documento de Análisis',
+      periodo,
+      fechaGeneracion: moment().format('DD/MM/YYYY HH:mm'),
+      // KPIs
+      ingresosTotales: ingresosTotales || 0,
+      porcentajeCrecimiento: calcularCrecimiento(ingresosPorMes),
+      trabajosCompletados: trabajosCompletados || 0,
+      ticketPromedio: ticketPromedio || 0,
+      clientesActivos: clientesActivos || 0,
+      // Datos para gráficos
+      meses: ingresosPorMes.map(m => m.mes),
+      ingresosPorMes: ingresosPorMes.map(m => m.total),
+      proyeccionIngresos: calcularProyeccion(ingresosPorMes),
+      categorias,
+      topClientes,
+      serviciosFrecuentes,
+      zonasClientes,
+      trabajosPorDia,
+      estadosInfo,
+      // Proyecciones
+      proyeccionMensual: proyecciones.mensual || 0,
+      crecimientoEsperado: proyecciones.crecimiento || 0,
+      categoriaEnCrecimiento: proyecciones.categoriaTop || 'N/A'
+    });
+  } catch (error) {
+    console.error('Error en documento:', error);
+    res.status(500).send('Error al generar documento: ' + error.message);
+  }
+};
+
 module.exports = exports;

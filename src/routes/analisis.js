@@ -6,6 +6,9 @@ const { requireLogin } = require('../middlewares/auth');
 // Ruta principal del análisis
 router.get('/', requireLogin, analisisController.dashboard);
 
+// Nueva ruta para el documento PDF
+router.get('/documento', requireLogin, analisisController.documento);
+
 // Rutas para obtener datos específicos (AJAX)
 router.get('/api/ingresos/:periodo', requireLogin, analisisController.getIngresosPorPeriodo);
 router.get('/api/clientes/top', requireLogin, analisisController.getTopClientes);

@@ -11,7 +11,7 @@
         </div>
 
         <% if (error) { %>
-          <div class="alert alert-danger text-center"><%= error %></div>
+        <div class="alert alert-danger text-center"><%= error %></div>
         <% } %>
 
         <form method="POST" action="/login">
@@ -29,7 +29,7 @@
               <input type="password" name="password" class="form-control" required>
             </div>
           </div>
-          <button id="loginBtn" class="btn btn-primary w-100" disabled>
+          <button id="loginBtn" class="btn btn-primary w-100 btn-login" disabled>
             <i class="bi bi-box-arrow-in-right"></i> Entrar
           </button>
         </form>
