@@ -1,0 +1,12 @@
+Copyright (c) 2025 DenguNorte
+
+Este software es propiedad privada y está licenciado exclusivamente para uso 
+interno y empresarial de Servicio Tecnico JP SPA o entidades autorizadas.
+
+RESTRICCIONES:
+• Prohibida la distribución no autorizada
+• Prohibida la copia o modificación sin permiso
+• Prohibido el uso comercial sin licencia
+
+Para licencias empresariales o más información:
+christiancaceres1398@gmail.com

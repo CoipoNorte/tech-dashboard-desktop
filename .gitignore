@@ -21,7 +21,6 @@ correo.txt
 package-lock.json
 
 # Base de datos y archivos temporales
-uploads/
 data/
 *.db
 *.sqlite
