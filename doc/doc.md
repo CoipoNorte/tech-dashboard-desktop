@@ -1,7 +1,6 @@
 # Estructura
 ```
 .
-|   build-and-run.bat
 |   credentials.json
 |   main.js
 |   package.json
