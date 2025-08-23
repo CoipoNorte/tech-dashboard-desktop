@@ -93,37 +93,37 @@
 <summary>🖱️ Haz clic para ver las capturas</summary>
 
 ### Login y Autenticación
-![Login](./doc/img/1_login.png)
+![Login](https://github.com/CoipoNorte/tech-dashboard-desktop/raw/main/doc/img/1_login.png)
 
 ### Panel Principal de Trabajos
-![Panel de Trabajos](./doc/img/2_trabajos_1.png)
-![Panel de Trabajos Detalle](./doc/img/2_trabajos_2.png)
+![Panel de Trabajos](https://github.com/CoipoNorte/tech-dashboard-desktop/raw/main/doc/img/2_trabajos_1.png)
+![Panel de Trabajos Detalle](https://github.com/CoipoNorte/tech-dashboard-desktop/raw/main/doc/img/2_trabajos_2.png)
 
 ### Calendario Integrado
-![Calendario](./doc/img/3_calendario_1.png)
-![Calendario Detalle](./doc/img/3_calendario_2.png)
+![Calendario](https://github.com/CoipoNorte/tech-dashboard-desktop/raw/main/doc/img/3_calendario_1.png)
+![Calendario Detalle](https://github.com/CoipoNorte/tech-dashboard-desktop/raw/main/doc/img/3_calendario_2.png)
 
 ### Dashboard de Métricas
-![Dashboard](./doc/img/4_dashboard.png)
+![Dashboard](https://github.com/CoipoNorte/tech-dashboard-desktop/raw/main/doc/img/4_dashboard.png)
 
 ### Gestión de Clientes
-![Clientes Lista](./doc/img/5_clientes_1.png)
-![Clientes Formulario](./doc/img/5_clientes_2.png)
-![Clientes Detalle](./doc/img/5_clientes_3.png)
-![Clientes Búsqueda](./doc/img/5_clientes_4.png)
+![Clientes Lista](https://github.com/CoipoNorte/tech-dashboard-desktop/raw/main/doc/img/5_clientes_1.png)
+![Clientes Formulario](https://github.com/CoipoNorte/tech-dashboard-desktop/raw/main/doc/img/5_clientes_2.png)
+![Clientes Detalle](https://github.com/CoipoNorte/tech-dashboard-desktop/raw/main/doc/img/5_clientes_3.png)
+![Clientes Búsqueda](https://github.com/CoipoNorte/tech-dashboard-desktop/raw/main/doc/img/5_clientes_4.png)
 
 ### Configuración del Sistema
-![Categorías](./doc/img/6_categorias_1.png)
-![Estados](./doc/img/7_estados_1.png)
-![Urgencias](./doc/img/8_urgencias_1.png)
+![Categorías](https://github.com/CoipoNorte/tech-dashboard-desktop/raw/main/doc/img/6_categorias_1.png)
+![Estados](https://github.com/CoipoNorte/tech-dashboard-desktop/raw/main/doc/img/7_estados_1.png)
+![Urgencias](https://github.com/CoipoNorte/tech-dashboard-desktop/raw/main/doc/img/8_urgencias_1.png)
 
 ### Análisis y Reportes
-![Análisis](./doc/img/9_analisis_1.png)
-![Reportes](./doc/img/9_analisis_2.png)
+![Análisis](https://github.com/CoipoNorte/tech-dashboard-desktop/raw/main/doc/img/9_analisis_1.png)
+![Reportes](https://github.com/CoipoNorte/tech-dashboard-desktop/raw/main/doc/img/9_analisis_2.png)
 
 ### Herramientas y Perfil
-![Herramientas](./doc/img/10_herramientas.png)
-![Perfil de Usuario](./doc/img/11_perfil.png)
+![Herramientas](https://github.com/CoipoNorte/tech-dashboard-desktop/raw/main/doc/img/10_herramientas.png)
+![Perfil de Usuario](https://github.com/CoipoNorte/tech-dashboard-desktop/raw/main/doc/img/11_perfil.png)
 
 </details>
 
