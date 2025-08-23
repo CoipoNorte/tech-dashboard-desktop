@@ -1,7 +1,7 @@
 # 📖 Manual de Usuario - Tech Dashboard Desktop
 
 <div align="center">
-  <img src="../public/icon/icon.ico" alt="Tech Dashboard Logo" width="128"/>
+  <img src="https://raw.githubusercontent.com/CoipoNorte/tech-dashboard-desktop/refs/heads/main/public/icon/icon.ico" alt="Tech Dashboard Logo" width="128"/>
   
   **Guía completa para usuarios de Tech Dashboard Desktop**
   
