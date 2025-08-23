@@ -18,6 +18,7 @@ yarn-error.log*
 token.json
 credentials.json
 correo.txt
+package-lock.json
 
 # Base de datos y archivos temporales
 uploads/
