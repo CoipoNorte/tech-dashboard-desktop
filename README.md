@@ -93,37 +93,37 @@
 <summary>🖱️ Haz clic para ver las capturas</summary>
 
 ### Login y Autenticación
-![Login](./doc/1_login.png)
+![Login](./doc/img/1_login.png)
 
 ### Panel Principal de Trabajos
-![Panel de Trabajos](./doc/2_trabajos_1.png)
-![Panel de Trabajos Detalle](./doc/2_trabajos_2.png)
+![Panel de Trabajos](./doc/img/2_trabajos_1.png)
+![Panel de Trabajos Detalle](./doc/img/2_trabajos_2.png)
 
 ### Calendario Integrado
-![Calendario](./doc/3_calendario_1.png)
-![Calendario Detalle](./doc/3_calendario_2.png)
+![Calendario](./doc/img/3_calendario_1.png)
+![Calendario Detalle](./doc/img/3_calendario_2.png)
 
 ### Dashboard de Métricas
-![Dashboard](./doc/4_dashboard.png)
+![Dashboard](./doc/img/4_dashboard.png)
 
 ### Gestión de Clientes
-![Clientes Lista](./doc/5_clientes_1.png)
-![Clientes Formulario](./doc/5_clientes_2.png)
-![Clientes Detalle](./doc/5_clientes_3.png)
-![Clientes Búsqueda](./doc/5_clientes_4.png)
+![Clientes Lista](./doc/img/5_clientes_1.png)
+![Clientes Formulario](./doc/img/5_clientes_2.png)
+![Clientes Detalle](./doc/img/5_clientes_3.png)
+![Clientes Búsqueda](./doc/img/5_clientes_4.png)
 
 ### Configuración del Sistema
-![Categorías](./doc/6_categorias_1.png)
-![Estados](./doc/7_estados_1.png)
-![Urgencias](./doc/8_urgencias_1.png)
+![Categorías](./doc/img/6_categorias_1.png)
+![Estados](./doc/img/7_estados_1.png)
+![Urgencias](./doc/img/8_urgencias_1.png)
 
 ### Análisis y Reportes
-![Análisis](./doc/9_analisis_1.png)
-![Reportes](./doc/9_analisis_2.png)
+![Análisis](./doc/img/9_analisis_1.png)
+![Reportes](./doc/img/9_analisis_2.png)
 
 ### Herramientas y Perfil
-![Herramientas](./doc/10_herramientas.png)
-![Perfil de Usuario](./doc/11_perfil.png)
+![Herramientas](./doc/img/10_herramientas.png)
+![Perfil de Usuario](./doc/img/11_perfil.png)
 
 </details>
 

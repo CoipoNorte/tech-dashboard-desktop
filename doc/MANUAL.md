@@ -66,7 +66,8 @@
 - **Modo Web**: Abre tu navegador en `http://localhost:3000`
 
 #### 2. Iniciar Sesión
-![Pantalla de Login](../doc/1_login.png)
+![Pantalla de Login](https://github.com/CoipoNorte/tech-dashboard-desktop/raw/main/doc/img/dashboard.png)
+![Pantalla de Login](../doc/img/1_login.png)
 
 **Credenciales por defecto:**
 - 👤 **Usuario**: `admin`
@@ -126,7 +127,7 @@ La aplicación está organizada en secciones principales:
    - **Contacto**: Teléfono, email, dirección
    - **Notas**: Información adicional relevante
 
-![Formulario de Cliente](../doc/5_clientes_2.png)
+![Formulario de Cliente](../doc/img/5_clientes_2.png)
 
 #### Método 2: Desde la Lista de Clientes
 1. Ve a **Clientes** en el menú principal
@@ -141,7 +142,7 @@ La aplicación está organizada en secciones principales:
 - Busca por: nombre, email, teléfono o empresa
 - Los resultados se actualizan en tiempo real
 
-![Búsqueda de Clientes](../doc/5_clientes_4.png)
+![Búsqueda de Clientes](../doc/img/5_clientes_4.png)
 
 > 💡 **Consejo**: Mantén actualizada la información de contacto para mejorar la comunicación
 
@@ -166,7 +167,7 @@ En el perfil de cada cliente encontrarás:
    - **Descripción detallada**: Problema o servicio
    - **Categoría**: Reparación, mantenimiento, instalación, etc.
 
-![Crear Trabajo](../doc/2_trabajos_1.png)
+![Crear Trabajo](../doc/img/2_trabajos_1.png)
 
 #### Configuración del Trabajo
 - **Estado inicial**: Pendiente, en proceso, etc.
@@ -194,7 +195,7 @@ En el perfil de cada cliente encontrarás:
 ### Programar en Calendario
 
 #### Vista de Calendario
-![Calendario](../doc/3_calendario_1.png)
+![Calendario](../doc/img/3_calendario_1.png)
 
 1. **Accede al calendario** desde el menú principal
 2. **Arrastra trabajos** a las fechas deseadas
@@ -237,7 +238,7 @@ En el perfil de cada cliente encontrarás:
 4. **Selecciona archivo(s)** desde tu computadora
 5. **Confirma la subida**
 
-![Gestión de Archivos](../doc/2_trabajos_2.png)
+![Gestión de Archivos](../doc/img/2_trabajos_2.png)
 
 #### Tipos de Archivo Soportados
 - 📸 **Imágenes**: JPG, PNG, GIF, BMP
@@ -275,7 +276,7 @@ Tech Dashboard/
 ### Dashboard de Métricas
 
 #### Información Disponible
-![Dashboard](../doc/4_dashboard.png)
+![Dashboard](../doc/img/4_dashboard.png)
 
 El dashboard muestra:
 - 📈 **Trabajos del mes**: Total, completados, pendientes
@@ -295,7 +296,7 @@ El dashboard muestra:
    - Estadísticas de facturación
 
 
-![Análisis](../doc/9_analisis_1.png)
+![Análisis](../doc/img/9_analisis_1.png)
 
 ### Exportar Datos
 
@@ -321,7 +322,7 @@ El dashboard muestra:
 - **Picos**: Períodos de mayor actividad
 - **Valles**: Oportunidades de mejora
 
-![Gráficos de Análisis](../doc/9_analisis_2.png)
+![Gráficos de Análisis](../doc/img/9_analisis_2.png)
 
 ---
 
@@ -338,7 +339,7 @@ El dashboard muestra:
    - **Color**: Para identificación visual
    - **Precio base**: Si aplica
 
-![Categorías](../doc/6_categorias_1.png)
+![Categorías](../doc/img/6_categorias_1.png)
 
 #### Editar Categorías Existentes
 - **Cambiar nombre** y descripción
@@ -349,7 +350,7 @@ El dashboard muestra:
 ### Configurar Estados
 
 #### Estados del Sistema
-![Estados](../doc/7_estados_1.png)
+![Estados](../doc/img/7_estados_1.png)
 
 Los estados determinan el flujo de trabajo:
 
@@ -366,7 +367,7 @@ Los estados determinan el flujo de trabajo:
 ### Gestionar Urgencias
 
 #### Niveles de Urgencia
-![Urgencias](../doc/8_urgencias_1.png)
+![Urgencias](../doc/img/8_urgencias_1.png)
 
 Configura los niveles según tu negocio:
 - **Mantenimiento Preventivo**: Baja urgencia
@@ -382,7 +383,7 @@ Configura los niveles según tu negocio:
 ### Herramientas Administrativas
 
 #### Limpieza de Base de Datos
-![Herramientas](../doc/10_herramientas.png)
+![Herramientas](../doc/img/10_herramientas.png)
 
 **Opciones disponibles:**
 - 🗑️ **Vaciar trabajos**: Elimina todos los trabajos (mantiene clientes)
