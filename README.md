@@ -1,118 +1,400 @@
-# Tech Dashboard Desktop
+# 🚀 Tech Dashboard Desktop
 
-**Tech Dashboard Desktop** es una aplicación de escritorio profesional para la gestión de clientes, trabajos, archivos y métricas, diseñada para empresas de servicios técnicos, talleres y equipos de soporte.  
-Funciona con **Electron + Express + SQLite** y permite integración con Google Drive para gestión de archivos y fotos.
+<div align="center">
+  <img src="./public/icon/icon.ico" alt="Tech Dashboard Logo" width="128"/>
+  
+  **Aplicación de escritorio profesional para la gestión integral de servicios técnicos**
+  
+  [![Electron](https://img.shields.io/badge/Electron-20232A?style=for-the-badge&logo=electron&logoColor=white)](https://electronjs.org/)
+  [![Express](https://img.shields.io/badge/Express.js-404D59?style=for-the-badge&logo=express)](https://expressjs.com/)
+  [![SQLite](https://img.shields.io/badge/SQLite-07405E?style=for-the-badge&logo=sqlite&logoColor=white)](https://sqlite.org/)
+  [![Bootstrap](https://img.shields.io/badge/Bootstrap-563D7C?style=for-the-badge&logo=bootstrap&logoColor=white)](https://getbootstrap.com/)
+</div>
 
 ---
 
+## 📋 Tabla de Contenidos
+
+- [🎯 Descripción](#-descripción)
+- [✨ Características](#-características)
+- [📸 Capturas de Pantalla](#-capturas-de-pantalla)
+- [🔧 Requisitos](#-requisitos)
+- [⚡ Instalación Rápida](#-instalación-rápida)
+- [🚀 Uso](#-uso)
+- [🏗️ Arquitectura](#️-arquitectura)
+- [📁 Estructura del Proyecto](#-estructura-del-proyecto)
+- [🔑 Configuración de Google Drive](#-configuración-de-google-drive)
+- [📦 Build y Distribución](#-build-y-distribución)
+- [🤝 Contribución](#-contribución)
+- [📄 Licencia](#-licencia)
+- [💬 Soporte](#-soporte)
+
+---
+
+## 🎯 Descripción
+
+**Tech Dashboard Desktop** es una solución integral diseñada específicamente para empresas de servicios técnicos, talleres y equipos de soporte. Combina la potencia de Electron con la flexibilidad de Express y la eficiencia de SQLite para ofrecer una experiencia de gestión completa y profesional.
+
+### 🎪 ¿Por qué elegir Tech Dashboard?
+
+- **Todo en uno**: Gestiona clientes, trabajos, archivos y métricas desde una sola aplicación
+- **Multiplataforma**: Funciona en Windows, macOS y Linux
+- **Integración en la nube**: Conecta con Google Drive para gestión de archivos
+- **Interfaz moderna**: Diseño responsive con Bootstrap 5 y animaciones fluidas
+- **Base de datos local**: SQLite garantiza rapidez y confiabilidad sin conexión
+
+---
+
+## ✨ Características
+
+### 👥 Gestión de Usuarios y Seguridad
+- Sistema de login seguro con autenticación
+- Perfiles de usuario personalizables
+- Control de acceso basado en roles
+
+### 👤 Gestión de Clientes
+- CRUD completo de clientes
+- Búsqueda avanzada y filtros
+- Historial detallado de trabajos por cliente
+- Exportación de datos
+
+### 💼 Gestión de Trabajos
+- Asociación de trabajos con clientes, categorías y prioridades
+- Estados personalizables (pendiente, en proceso, completado, etc.)
+- Sistema de urgencias configurable
+- Calendario visual integrado
+- Seguimiento detallado de progreso
+
+### 📁 Gestión de Archivos
+- Integración completa con Google Drive
+- Subida, renombrado y eliminación de archivos
+- Organización automática por trabajo/cliente
+- Previsualización de imágenes
+- Descarga masiva
+
+### 📊 Análisis y Reportes
+- Dashboard visual con métricas en tiempo real
+- Gráficos interactivos de rendimiento
+- Exportación a CSV y Excel
+- Reportes personalizables
+- Análisis de tendencias
+
+### 🛠️ Herramientas Administrativas
+- Importación/Exportación masiva de datos
+- Backup y restauración de base de datos
+- Limpieza selectiva de datos
+- Configuración de categorías, estados y urgencias
+
+---
+
+## 📸 Capturas de Pantalla
+
+<details>
+<summary>🖱️ Haz clic para ver las capturas</summary>
+
+### Login y Autenticación
 ![Login](./doc/1_login.png)
+
+### Panel Principal de Trabajos
 ![Panel de Trabajos](./doc/2_trabajos_1.png)
-![Panel de Trabajos](./doc/2_trabajos_2.png)
+![Panel de Trabajos Detalle](./doc/2_trabajos_2.png)
+
+### Calendario Integrado
 ![Calendario](./doc/3_calendario_1.png)
-![Calendario](./doc/3_calendario_2.png)
-![Panel de atajos](./doc/4_dashboard.png)
-![Clientes](./doc/5_clientes_1.png)
-![Clientes](./doc/5_clientes_2.png)
-![Clientes](./doc/5_clientes_3.png)
-![Clientes](./doc/5_clientes_4.png)
-![Categorias](./doc/6_categorias_1.png)
-![Categorias](./doc/6_categorias_2.png)
-![Categorias](./doc/6_categorias_3.png)
+![Calendario Detalle](./doc/3_calendario_2.png)
+
+### Dashboard de Métricas
+![Dashboard](./doc/4_dashboard.png)
+
+### Gestión de Clientes
+![Clientes Lista](./doc/5_clientes_1.png)
+![Clientes Formulario](./doc/5_clientes_2.png)
+![Clientes Detalle](./doc/5_clientes_3.png)
+![Clientes Búsqueda](./doc/5_clientes_4.png)
+
+### Configuración del Sistema
+![Categorías](./doc/6_categorias_1.png)
 ![Estados](./doc/7_estados_1.png)
-![Estados](./doc/7_estados_2.png)
-![Estados](./doc/7_estados_3.png)
 ![Urgencias](./doc/8_urgencias_1.png)
-![Urgencias](./doc/8_urgencias_2.png)
-![Urgencias](./doc/8_urgencias_3.png)
-![Analisis](./doc/9_analisis_1.png)
-![Analisis](./doc/9_analisis_2.png)
+
+### Análisis y Reportes
+![Análisis](./doc/9_analisis_1.png)
+![Reportes](./doc/9_analisis_2.png)
+
+### Herramientas y Perfil
 ![Herramientas](./doc/10_herramientas.png)
 ![Perfil de Usuario](./doc/11_perfil.png)
-![Pagina 404](./doc/0_404.png)
+
+</details>
 
 ---
 
-## **Características principales**
+## 🔧 Requisitos
 
-- **Gestión de usuarios** con login seguro y perfiles.
-- **Gestión de clientes**: crear, editar, eliminar, buscar y ver detalles.
-- **Gestión de trabajos**: asociar trabajos a clientes, categorías, estados y urgencias.
-- **Gestión de archivos/fotos**: integración con Google Drive, subida, renombrado, eliminación y descarga.
-- **Exportación/Importación** de datos a CSV (ZIP) y Excel (dos hojas).
-- **Vaciar base de datos** de clientes y trabajos por separado.
-- **Interfaz moderna, responsiva y profesional** (Bootstrap 5).
-- **Animaciones y alertas Bootstrap** en todas las acciones importantes.
-- **Dashboard visual** con tarjetas de métricas, categorías y estados.
-- **Soporte para modo escritorio (Windows, Mac, Linux)**.
+### Requisitos del Sistema
+- **Node.js**: 18.x o superior
+- **npm**: 8.x o superior
+- **Sistema Operativo**: Windows 10+, macOS 10.14+, o Linux (Ubuntu 18.04+)
+
+### Servicios Externos (Opcional)
+- **Google Cloud Console**: Para integración con Google Drive
+- **Cuenta de Google Drive**: Para almacenamiento en la nube
 
 ---
 
-## **Requisitos**
+## ⚡ Instalación Rápida
 
-- Node.js 18+ (recomendado)
-- npm
-- [Electron](https://www.electronjs.org/)
-- [Google Cloud Console](https://console.cloud.google.com/) (para Drive)
-- [SQLite3](https://www.sqlite.org/index.html) (incluido en dependencias)
+### 1️⃣ Clona el repositorio
+```bash
+git clone https://github.com/tuempresa/tech-dashboard-desktop.git
+cd tech-dashboard-desktop
+```
 
----
-
-## **Instalación y uso**
-
-1. **Clona el repositorio**
-   ```bash
-   git clone https://github.com/tuempresa/tech-dashboard-desktop.git
-   cd tech-dashboard-desktop
-   ```
-Instala las dependencias
-
-```Bash
-
+### 2️⃣ Instala las dependencias
+```bash
 npm install
 ```
-Crea la base de datos y el usuario admin
 
-```Bash
-
+### 3️⃣ Configura la base de datos
+```bash
+# Crear la estructura de la base de datos
 npm run gen-db
+
+# Crear usuario administrador por defecto
 npm run gen-admin
 ```
-Agrega tu archivo credentials.json de Google Drive
-(descárgalo desde Google Cloud Console y colócalo en la raíz del proyecto).
 
-Desarrollo
+### 4️⃣ Configura Google Drive (Opcional)
+1. Ve a [Google Cloud Console](https://console.cloud.google.com/)
+2. Crea un nuevo proyecto o selecciona uno existente
+3. Habilita la API de Google Drive
+4. Crea credenciales de OAuth 2.0
+5. Descarga el archivo `credentials.json`
+6. Coloca el archivo en la raíz del proyecto
 
-```Bash
-
+### 5️⃣ ¡Listo para usar!
+```bash
+# Modo desarrollo (navegador)
 npm run dev
-```
-Abre http://localhost:3000 en tu navegador.
 
-Modo escritorio (Electron)
-
-```Bash
-
+# Modo escritorio (Electron)
 npm start
 ```
-Build para distribución
 
-```Bash
+---
 
-npm run build
+## 🚀 Uso
+
+### Desarrollo
+```bash
+# Iniciar servidor de desarrollo
+npm run dev
+# Abre http://localhost:3000 en tu navegador
 ```
-El ejecutable estará en dist/win-unpacked/ (Windows).
 
-## **Licencia**
-```text
+### Modo Escritorio
+```bash
+# Ejecutar aplicación de escritorio
+npm start
+```
 
+### Credenciales por Defecto
+- **Usuario**: `admin`
+- **Contraseña**: `admin123`
+
+> ⚠️ **Importante**: Cambia las credenciales por defecto después del primer login
+
+---
+
+## 🏗️ Arquitectura
+
+Tech Dashboard sigue una arquitectura MVC (Modelo-Vista-Controlador) clara y escalable:
+
+```
+┌─────────────────────────────────────────────────────────────┐
+│                    TECH DASHBOARD                           │
+├─────────────────────────────────────────────────────────────┤
+│  Frontend (Bootstrap 5 + EJS + JavaScript)                 │
+├─────────────────────────────────────────────────────────────┤
+│  Backend (Express.js + Node.js)                            │
+│  ┌─────────────┬─────────────┬─────────────┬─────────────┐  │
+│  │   Router    │ Controller  │   Model     │    View     │  │
+│  │ (Routes)    │ (Logic)     │ (Data)      │ (Templates) │  │
+│  └─────────────┴─────────────┴─────────────┴─────────────┘  │
+├─────────────────────────────────────────────────────────────┤
+│  Base de Datos (SQLite)                                    │
+├─────────────────────────────────────────────────────────────┤
+│  Servicios Externos (Google Drive API)                     │
+└─────────────────────────────────────────────────────────────┘
+```
+
+### Flujo de Datos
+```
+Cliente/Usuario → Router → Controlador → Modelo ↔ SQLite
+                    ↓
+                  Vista (EJS) → Respuesta HTML
+```
+
+---
+
+## 📁 Estructura del Proyecto
+
+```
+tech-dashboard-desktop/
+│
+├── 📁 public/                  # Recursos estáticos
+│   ├── 📁 css/                # Estilos personalizados
+│   ├── 📁 js/                 # Scripts del cliente
+│   ├── 📁 sounds/             # Efectos de sonido UI
+│   └── 📁 vendor/             # Librerías externas
+│
+├── 📁 src/                    # Código fuente principal
+│   ├── 📁 config/             # Configuración de la aplicación
+│   ├── 📁 controllers/        # Lógica de negocio
+│   ├── 📁 models/             # Modelos de datos
+│   ├── 📁 routes/             # Definición de rutas
+│   ├── 📁 views/              # Plantillas EJS
+│   ├── 📁 middlewares/        # Middleware personalizado
+│   ├── 📁 utils/              # Utilidades y helpers
+│   ├── 📁 data/               # Base de datos SQLite
+│   └── server.js              # Punto de entrada del servidor
+│
+├── 📁 doc/                    # Documentación y capturas
+├── 📁 uploads/                # Archivos subidos temporalmente
+├── main.js                    # Punto de entrada de Electron
+└── package.json               # Configuración del proyecto
+```
+
+### Responsabilidades por Capa
+
+| Capa | Ubicación | Responsabilidad |
+|------|-----------|----------------|
+| **Router** | `src/routes/` | Mapear endpoints HTTP a controladores |
+| **Controller** | `src/controllers/` | Orquestar lógica de negocio |
+| **Model** | `src/models/` | Interactuar con la base de datos |
+| **View** | `src/views/` | Renderizar interfaz de usuario |
+| **Middleware** | `src/middlewares/` | Procesar peticiones (auth, validación) |
+
+---
+
+## 🔑 Configuración de Google Drive
+
+### Paso a Paso Detallado
+
+1. **Crear Proyecto en Google Cloud**
+   - Ve a [Google Cloud Console](https://console.cloud.google.com/)
+   - Crea un nuevo proyecto o selecciona uno existente
+
+2. **Habilitar APIs**
+   - Navega a "APIs y servicios" → "Biblioteca"
+   - Busca y habilita "Google Drive API"
+
+3. **Crear Credenciales**
+   - Ve a "APIs y servicios" → "Credenciales"
+   - Haz clic en "Crear credenciales" → "ID de cliente de OAuth 2.0"
+   - Configura el tipo de aplicación como "Aplicación de escritorio"
+
+4. **Configurar OAuth**
+   - Descarga el archivo JSON de credenciales
+   - Renómbralo a `credentials.json`
+   - Colócalo en la raíz del proyecto
+
+5. **Primera Autenticación**
+   - Ejecuta la aplicación
+   - Ve a la sección de fotos en cualquier trabajo
+   - Sigue el proceso de autorización en el navegador
+
+---
+
+## 📦 Build y Distribución
+
+### Compilar para Producción
+```bash
+# Generar build para Windows
+npm run build
+
+# Build para macOS (desde macOS)
+npm run build:mac
+
+# Build para Linux (desde Linux)
+npm run build:linux
+```
+
+### Archivos Generados
+- **Windows**: `dist/win-unpacked/`
+- **macOS**: `dist/mac/`
+- **Linux**: `dist/linux-unpacked/`
+
+### Instalador (Windows)
+```bash
+# Generar instalador .exe
+npm run dist
+```
+
+---
+
+## 🤝 Contribución
+
+Aunque este es un proyecto privado, si tienes acceso al repositorio:
+
+1. **Fork** el proyecto
+2. **Crea** una rama para tu feature (`git checkout -b feature/AmazingFeature`)
+3. **Commit** tus cambios (`git commit -m 'Add: Amazing Feature'`)
+4. **Push** a la rama (`git push origin feature/AmazingFeature`)
+5. **Abre** un Pull Request
+
+### Convenciones de Commit
+- `Add:` para nuevas funcionalidades
+- `Fix:` para corrección de bugs
+- `Update:` para actualizaciones
+- `Remove:` para eliminaciones
+- `Docs:` para documentación
+
+---
+
+## 📄 Licencia
+
+```
 Copyright (c) 2025 DenguNorte
 
-Este software es propiedad privada y está licenciado solo para uso interno y empresarial de Servicio Tecnico JP SPA o la organización que haya adquirido una licencia u permiso válida.
+Este software es propiedad privada y está licenciado exclusivamente para uso 
+interno y empresarial de Servicio Tecnico JP SPA o entidades autorizadas.
 
-Queda prohibida la distribución, copia, modificación o uso fuera de la organización sin autorización expresa por escrito.
+RESTRICCIONES:
+• Prohibida la distribución no autorizada
+• Prohibida la copia o modificación sin permiso
+• Prohibido el uso comercial sin licencia
 
-Para más información o licencias empresariales, contacta a: [christiancaceres1398@gmail.com]
+Para licencias empresariales o más información:
+📧 christiancaceres1398@gmail.com
 ```
-## **Soporte**
-Para soporte técnico, contacta a:
-[christiancaceres1398@gmail.com]
+
+---
+
+## 💬 Soporte
+
+### 📧 Contacto Técnico
+**Email**: [christiancaceres1398@gmail.com](mailto:christiancaceres1398@gmail.com)
+
+### 🆘 Antes de Contactar
+1. ✅ Verifica que cumples con los requisitos del sistema
+2. ✅ Revisa la documentación y capturas de pantalla
+3. ✅ Intenta reproducir el error en modo desarrollo
+4. ✅ Prepara los logs de error si los hay
+
+### 📋 Información a Incluir
+- Versión del sistema operativo
+- Versión de Node.js y npm
+- Descripción detallada del problema
+- Pasos para reproducir el error
+- Capturas de pantalla (si aplica)
+
+---
+
+<div align="center">
+  
+**¡Gracias por usar Tech Dashboard Desktop!**
+
+*Desarrollado con ❤️ por el equipo de DenguNorte*
+
+</div>
