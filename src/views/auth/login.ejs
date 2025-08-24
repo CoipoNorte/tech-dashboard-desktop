@@ -58,6 +58,21 @@
     }
 
     btn.disabled = false;
+
+    // Solo enviar el formulario si el Enter se presiona en el último campo
+    const form = document.querySelector('form');
+    form.addEventListener('keydown', function (e) {
+      if (e.key === 'Enter') {
+        const inputs = Array.from(form.querySelectorAll('input'));
+        const index = inputs.indexOf(document.activeElement);
+
+        if (index < inputs.length - 1) {
+          inputs[index + 1].focus();
+          e.preventDefault(); // Evita el envío si no estás en el último campo
+        }
+        // Si estás en el último campo (contraseña), no se hace preventDefault y el form se envía
+      }
+    });
   });
 </script>
 
